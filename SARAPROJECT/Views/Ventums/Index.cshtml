@@ -1,0 +1,107 @@
+﻿@model IEnumerable<SARAPROJECT.Models.Ventum>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IdMesa)
+            </th>
+            <!--
+            <th>
+                IdMetodo)
+            </th>
+             
+            <th>
+                 model.Nombre)
+            </th>-->
+            <th>
+                @Html.DisplayNameFor(model => model.CodVenta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaVenta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NroFactura)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ClaveAcceso)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NroPedido)
+            </th>
+            <!-- 
+            <th>
+                model.IdEstadoNavigation
+            </th>-->
+            <th>
+                @Html.DisplayNameFor(model => model.IdEstventaNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdUsuarioNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdMesa)
+            </td>
+            <!--
+            <td>
+               item.IdMetodo)
+            </td>
+            <td>
+              Nombre)
+            </td>-->
+            <td>
+                @Html.DisplayFor(modelItem => item.CodVenta)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaVenta)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NroFactura)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ClaveAcceso)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NroPedido)
+            </td>
+            <!-- 
+            <td>
+               IdEstadoNavigation.IdEstado
+            </td>-->
+            <td>
+                @Html.DisplayFor(modelItem => item.IdEstventaNavigation.IdEstventa)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdUsuarioNavigation.IdUsuario)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdVenta">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.IdVenta">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdVenta">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,161 @@
+﻿@model SARAPROJECT.Models.Ventum
+
+@{
+    ViewData["Title"] = "NUEVA VENTA";
+}
+
+<h1>CREAR</h1>
+
+<h4>NUEVA VE</h4>
+<hr />
+
+    <div class="col-8">
+        <div class="container">
+            <div  class="categorias col-5">   
+                <form>
+                    @foreach(var pr in ViewBag.listCategorias)
+                    {
+                        <button  value="@pr.IdCategoria" name="id" id="btnCargarLista" class="cargeList">@pr.Nombre </button>
+                    }
+                </form>
+            </div>
+            <div  class="productByCat col-5">   
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                CODIGO
+                            </th>
+                            <th>
+                                DESCRIPCION
+                            </th>
+                            <th>
+                                PRECIO
+                            </th>
+                            <th>
+                               FOTO
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="productByCat">           
+               
+                    </tbody>
+                </table>
+
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="col-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="IdMesa" class="control-label"></label>
+                <select asp-for="IdMesa" class ="form-control" asp-items="ViewBag.IdMesa"></select>
+                <span asp-validation-for="IdMesa" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdUsuario" class="control-label"></label>
+                <select asp-for="IdUsuario" class ="form-control" asp-items="ViewBag.IdUsuario"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdEstventa" class="control-label"></label>
+                <select asp-for="IdEstventa" class ="form-control" asp-items="ViewBag.IdEstventa"></select>
+            </div>
+            <!-- 
+            <div class="form-group">
+                <label asp-for="IdEstado" class="control-label"></label>
+                <select asp-for="IdEstado" class ="form-control" asp-items="ViewBag.IdEstado"></select>
+            </div>-->
+            <!-- 
+            <div class="form-group">
+                <label asp-for="IdMetodo" class="control-label"></label>
+                <input asp-for="IdMetodo" class="form-control" />
+                <span asp-validation-for="IdMetodo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Nombre" class="control-label"></label>
+                <input asp-for="Nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>-->
+            <div class="form-group">
+                <label asp-for="CodVenta" class="control-label"></label>
+                <input asp-for="CodVenta" class="form-control" />
+                <span asp-validation-for="CodVenta" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FechaVenta" class="control-label"></label>
+                <input asp-for="FechaVenta" class="form-control" />
+                <span asp-validation-for="FechaVenta" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Total" class="control-label"></label>
+                <input asp-for="Total" class="form-control" />
+                <span asp-validation-for="Total" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NroFactura" class="control-label"></label>
+                <input asp-for="NroFactura" class="form-control" />
+                <span asp-validation-for="NroFactura" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClaveAcceso" class="control-label"></label>
+                <input asp-for="ClaveAcceso" class="form-control" />
+                <span asp-validation-for="ClaveAcceso" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NroPedido" class="control-label"></label>
+                <input asp-for="NroPedido" class="form-control" />
+                <span asp-validation-for="NroPedido" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+
+$(document).ready(function() {  
+    $(document).on('click', '.cargeList', function(e) {
+        e.preventDefault();
+        var url = "@Url.Action("productosByCategoria","Ventums")";
+        var id = $(this).val();
+        var data = { id: id };
+        console.log(url);
+        $.ajax({ // cabecera de mi metodo ajax
+            url: url,
+            type: "get",
+            dataType: 'json',
+            data: data,
+            befonreSend: function() {
+                console.log("Accion terminada");
+            }
+        }).done(function(data) {
+            let productList = ""; 
+            for (let i = 0; i < data.length; i++) {
+               console.log(data[i].CodProducto);
+              productList += "<tr> <td>"+data[i].codProducto+"</td>"+
+                            "<td>"+data[i].nombreProducto+"</td>"+
+                            "<td>"+data[i].precio+"</td>"+
+                             "<td> <img  width=\"50\" heigth=\"50\"  src=\"/Content/imgProducts/"+ data[i].fotoProducto+ "\" > </td> <tr>";
+            }
+
+            document.getElementById("productByCat").innerHTML = productList; 
+        })
+    });
+});
+
+</script>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
