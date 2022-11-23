@@ -1,130 +1,209 @@
 ﻿@model SARAPROJECT.Models.Ventum
 
+<link rel="stylesheet" href="~/css/myCustomCss.css" />
 @{
     ViewData["Title"] = "NUEVA VENTA";
 }
 
-<h1>CREAR</h1>
-
-<h4>NUEVA VE</h4>
-<hr />
-
-    <div class="col-8">
-        <div class="container">
-            <div  class="categorias col-5">   
-                <form>
-                    @foreach(var pr in ViewBag.listCategorias)
-                    {
-                        <button  value="@pr.IdCategoria" name="id" id="btnCargarLista" class="cargeList">@pr.Nombre </button>
-                    }
-                </form>
-            </div>
-            <div  class="productByCat col-5">   
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>
-                                CODIGO
-                            </th>
-                            <th>
-                                DESCRIPCION
-                            </th>
-                            <th>
-                                PRECIO
-                            </th>
-                            <th>
-                               FOTO
-                            </th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody id="productByCat">           
-               
-                    </tbody>
-                </table>
-
+<div class="row">
+    <div class="row">
+            <div class="col-lg-7">   
 
             </div>
-
-        </div>
     </div>
 
+                            <div class="col-lg-7">
+                                <h2 class="title-1 m-b-25">Categorias</h2>
+                                <form>
 
-    <div class="col-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="IdMesa" class="control-label"></label>
-                <select asp-for="IdMesa" class ="form-control" asp-items="ViewBag.IdMesa"></select>
-                <span asp-validation-for="IdMesa" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdUsuario" class="control-label"></label>
-                <select asp-for="IdUsuario" class ="form-control" asp-items="ViewBag.IdUsuario"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdEstventa" class="control-label"></label>
-                <select asp-for="IdEstventa" class ="form-control" asp-items="ViewBag.IdEstventa"></select>
-            </div>
-            <!-- 
-            <div class="form-group">
-                <label asp-for="IdEstado" class="control-label"></label>
-                <select asp-for="IdEstado" class ="form-control" asp-items="ViewBag.IdEstado"></select>
-            </div>-->
-            <!-- 
-            <div class="form-group">
-                <label asp-for="IdMetodo" class="control-label"></label>
-                <input asp-for="IdMetodo" class="form-control" />
-                <span asp-validation-for="IdMetodo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
-            </div>-->
-            <div class="form-group">
-                <label asp-for="CodVenta" class="control-label"></label>
-                <input asp-for="CodVenta" class="form-control" />
-                <span asp-validation-for="CodVenta" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FechaVenta" class="control-label"></label>
-                <input asp-for="FechaVenta" class="form-control" />
-                <span asp-validation-for="FechaVenta" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Total" class="control-label"></label>
-                <input asp-for="Total" class="form-control" />
-                <span asp-validation-for="Total" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NroFactura" class="control-label"></label>
-                <input asp-for="NroFactura" class="form-control" />
-                <span asp-validation-for="NroFactura" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ClaveAcceso" class="control-label"></label>
-                <input asp-for="ClaveAcceso" class="form-control" />
-                <span asp-validation-for="ClaveAcceso" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NroPedido" class="control-label"></label>
-                <input asp-for="NroPedido" class="form-control" />
-                <span asp-validation-for="NroPedido" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+                                    @foreach(var pr in ViewBag.listCategorias)
+                                    {
+                                        <button  value="@pr.IdCategoria" name="id" id="btnCargarLista" class="cargeList">@pr.Nombre </button>
+                                    }
+                                </form>
 
+                                <h2 class="title-1 m-b-25">Productos</h2>
 
+                                <div class="table-responsive table--no-card m-b-40">
+                                    <table class="table table-borderless table-striped table-earning">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    CODIGO
+                                                </th>
+                                                <th>
+                                                    DESCRIPCION
+                                                </th>
+                                                <th class="text-right">
+                                                    PRECIO
+                                                </th>
+                                                <th>
+                                                   FOTO
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="productByCat">
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-5">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <strong>Detalles:</strong> Ventas
+                                    </div>
+                                    <div class="card-body card-block">
+                                        <form asp-action="Create"  class="form-horizontal">
+                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                             <!--NRO PEDIDO-->
+                                            <div class="row form-group">
+                                                <div class="col col-md-3">
+                                                    <label asp-for="NroPedido" class="control-label"></label>
+                                                </div>
+                                                <div class="col-12 col-md-9">
+                                                    <input asp-for="NroPedido" class="form-control" />
+                                                    <span asp-validation-for="NroPedido" class="text-danger"></span>
+                                                </div>
+                                            </div>
+
+                                            <!--ID MESA-->
+                                            <div class="row form-group">
+                                                <div class="col col-md-3">
+                                                    <label asp-for="IdMesa" class="form-control-label"></label>
+                                                </div>
+                                                <div class="col-12 col-md-9">
+                                                    <select asp-for="IdMesa" class ="form-control" asp-items="ViewBag.IdMesa"></select>
+                                                    <span asp-validation-for="IdMesa" class="text-danger"></span>
+                                                </div>
+                                            </div>
+
+                                            <!--ID USUARIO-->
+                                            <div class="row form-group" style="display:none">
+                                                <div class="col col-md-3">
+                                                  <label asp-for="IdUsuario" class="control-label"></label>
+                                                </div>
+                                                <div class="col-12 col-md-9">                                              
+                                                  <select asp-for="IdUsuario" class ="form-control" asp-items="ViewBag.IdUsuario"></select>
+                                                </div>
+                                            </div>
+                                            <!--ID ES VENTA-->
+                                            <div class="row form-group" style="display:none">
+                                                <div class="col col-md-3">
+                                                  <label asp-for="IdEstventa" class="control-label"></label>
+                                                </div>
+                                                <div class="col-12 col-md-9" >                                              
+                                                  <select asp-for="IdEstventa" class ="form-control" asp-items="ViewBag.IdEstventa" ></select>
+                                                </div>
+                                            </div>
+
+                                            <!--CODIGO VENTA-->
+                                            <div class="row form-group" style="display:none" >
+                                                <div class="col col-md-3">
+                                                  <label asp-for="CodVenta" class="control-label"></label>
+                                                </div>
+                                                <div class="col-12 col-md-9">                                              
+                                                  <input asp-for="CodVenta" class="form-control" />
+                                                  <span asp-validation-for="CodVenta" class="text-danger"></span>
+                                                </div>
+                                            </div>
+
+                                            <!--FECHA DE  VENTA-->
+                                            <div class="row form-group" style="display:none">
+                                                <div class="col col-md-3">
+                                                  <label asp-for="FechaVenta" class="control-label"></label>
+                                                </div>
+                                                <div class="col-12 col-md-9">                                              
+                                                  <input asp-for="FechaVenta" class="form-control" />
+                                                  <span asp-validation-for="FechaVenta" class="text-danger"></span>
+                                                </div>
+                                            </div>                                            
+                                            <!--TOTAL  VENTA-->
+                                            <div class="row form-group">
+                                                <div class="col col-md-3">
+                                                  <label asp-for="Total" class="control-label"></label>
+                                                </div>
+                                                <div class="col-12 col-md-9">                                              
+                                                  <input asp-for="Total" class="form-control" />
+                                                  <span asp-validation-for="Total" class="text-danger"></span>
+                                                </div>
+                                            </div>  
+                                           <!-- 
+                                            <div class="form-group">
+                                                <label asp-for="IdEstado" class="control-label"></label>
+                                                <select asp-for="IdEstado" class ="form-control" asp-items="ViewBag.IdEstado"></select>
+                                            </div>-->
+                                            <!-- 
+                                            <div class="form-group">
+                                                <label asp-for="IdMetodo" class="control-label"></label>
+                                                <input asp-for="IdMetodo" class="form-control" />
+                                                <span asp-validation-for="IdMetodo" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="Nombre" class="control-label"></label>
+                                                <input asp-for="Nombre" class="form-control" />
+                                                <span asp-validation-for="Nombre" class="text-danger"></span>
+                                            </div>-->
+                                            <div class="form-group text-hide">
+                                                <label asp-for="NroFactura" class="control-label"></label>
+                                                <input asp-for="NroFactura" class="form-control"  type="hidden" value="SN"/>
+                                                <span asp-validation-for="NroFactura" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group text-hide">
+                                                <label asp-for="ClaveAcceso" class="control-label"></label>
+                                                <input asp-for="ClaveAcceso" class="form-control"  type="hidden" value="SN"/>
+                                                <span asp-validation-for="ClaveAcceso" class="text-danger"></span>
+                                            </div>
+
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>
+                                                                CANTIDAD
+                                                            </th>
+                                                            <th>
+                                                                DESCRIPCION
+                                                            </th>
+                                                            <th >
+                                                                PRECIO
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="productsToPayList">
+                                            
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="card-footer">
+                                                <button type="submit" class="btn btn-primary btn-sm">
+                                                    <i class="fa fa-dot-circle-o"></i> Submit
+                                                </button>
+                                                <button type="reset" class="btn btn-danger btn-sm">
+                                                    <i class="fa fa-ban"></i> Reset
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            
+</div>
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script>
 
+
+<script>
+/*DECLARACION DE VARIABLES  */
+
+let dVentaList; 
+let dVentaListTosend=[];
+
+
+/*METODOS AJAX */
 $(document).ready(function() {  
     $(document).on('click', '.cargeList', function(e) {
         e.preventDefault();
@@ -141,19 +220,85 @@ $(document).ready(function() {
                 console.log("Accion terminada");
             }
         }).done(function(data) {
+            dVentaList = Object.create(data); 
+            
             let productList = ""; 
             for (let i = 0; i < data.length; i++) {
-               console.log(data[i].CodProducto);
-              productList += "<tr> <td>"+data[i].codProducto+"</td>"+
-                            "<td>"+data[i].nombreProducto+"</td>"+
-                            "<td>"+data[i].precio+"</td>"+
-                             "<td> <img  width=\"50\" heigth=\"50\"  src=\"/Content/imgProducts/"+ data[i].fotoProducto+ "\" > </td> <tr>";
+              dVentaList[i].cantidad = 0;
+              productList += "<tr  onclick=\"productsToList(this)\" ><td>"+data[i].codProducto+"</td>"+
+                             "<td>"+data[i].nombreProducto+"</td>"+
+                             "<td>"+data[i].precio+"</td>"+
+                             "<td> <img  width=\"50\" heigth=\"50\"  src=\"/Content/imgProducts/"+ data[i].fotoProducto+ "\" > </td> </tr>";
             }
+            
 
             document.getElementById("productByCat").innerHTML = productList; 
         })
     });
 });
+
+
+
+/*AGREGAR PRODUCTOS A LA LISTA */
+function productsToList(x) {
+
+    var i = Math.abs(x.rowIndex - 1);
+    var productsToPayList = " "; 
+
+    var positionInList = findProductoById(dVentaList[i].idProducto);
+    document.getElementById("productsToPayList");
+
+    if (positionInList>=0) {  
+        
+           dVentaListTosend[positionInList].cantidad++;
+           var cantidadInput =  document.getElementById("itemList"+dVentaListTosend[positionInList].idProducto);
+           cantidadInput.setAttribute("value",  dVentaListTosend[positionInList].cantidad);
+
+    } else {
+            
+            dVentaListTosend.push(dVentaList[i]);
+            var posicionActual =  dVentaListTosend.length-1; 
+            dVentaListTosend[posicionActual].cantidad++;
+
+            productsToPayList += " <tr><td> <input type=\"number\" id=\"itemList" +  dVentaListTosend[posicionActual].idProducto + "\" value = \"" + dVentaListTosend[posicionActual].cantidad + "\" style =\"width:100px;\" /></td>" +
+            "<td>" + dVentaListTosend[posicionActual].nombreProducto + "</td>" +
+            "<td>" +dVentaListTosend[posicionActual].precio + "</td>" +
+            "<td> " + "<button class=\"item delete\" data-toggle=\"modal\" title=\"Eliminar\" value=\""+ dVentaListTosend[posicionActual].idProducto  +"\" id=\"btnDelete\"> "+
+            "<i class=\"zmdi zmdi-delete\"></i> </button>"+
+            "  </td> </tr>";
+            document.getElementById("productsToPayList").innerHTML+= productsToPayList;
+     }
+
+
+}
+
+$(document).on('click', '.delete', function(event) {
+
+   event.preventDefault();
+   $(this).closest('tr').remove();
+  var id=  $(this).val();
+  var posicion = findProductoById(id);
+
+  dVentaListTosend.splice(posicion, 1);
+
+});
+
+
+function findProductoById(idProducto) {
+
+        if (dVentaListTosend.length == 0) {
+            return -1;
+        }
+
+        for (let i = 0; i < dVentaListTosend.length; i++) {
+
+            if (dVentaListTosend[i].idProducto == idProducto) {
+                return i;
+            }
+
+        }
+   return -1;
+}
 
 </script>
 @section Scripts {
