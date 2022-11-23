@@ -9,6 +9,16 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<SARADBContext>(options =>
        options.UseSqlServer(builder.Configuration.GetConnectionString("strConnection")));
 
+
+//builder.Services.AddSwaggerGen();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(480);
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -19,6 +29,9 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
+app.UseSession();
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -28,6 +41,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Acceso}/{action=Login}/{id?}");
 
 app.Run();

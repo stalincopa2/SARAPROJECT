@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using SARAPROJECT.Models;
 
 namespace SARAPROJECT.Controllers
@@ -21,9 +22,19 @@ namespace SARAPROJECT.Controllers
         // GET: Ventums
         public async Task<IActionResult> Index()
         {
+            if (string.IsNullOrWhiteSpace(HttpContext.Session.GetString("Usuario")))
+            {
+                return RedirectToAction("Login", "Acceso");
+            }
+            var str = (HttpContext.Session.GetString("Usuario"));
+            var objUsuario = JsonConvert.DeserializeObject<Usuario>(str);
+            ViewBag.Usuario = objUsuario.NombreUsuario;
+            ViewBag.IdUsuario = objUsuario.IdUsuario;
+
             var sARADBContext = _context.Venta.Include(v => v.IdEstventaNavigation).Include(v => v.IdUsuarioNavigation);
 
             // var sARADBContext = _context.Venta.Include(v => v.IdEstadoNavigation).Include(v => v.IdEstventaNavigation).Include(v => v.IdUsuarioNavigation);
+
             return View(await sARADBContext.ToListAsync());
         }
 
@@ -63,10 +74,26 @@ namespace SARAPROJECT.Controllers
         // GET: Ventums/Create
         public IActionResult Create()
         {
-            ViewBag.listCategorias = _context.Categoria.ToList();
+            if (string.IsNullOrWhiteSpace(HttpContext.Session.GetString("Usuario")))
+            {
+                return RedirectToAction("Login", "Acceso");
+            }
+            var str = (HttpContext.Session.GetString("Usuario"));
+            var objUsuario = JsonConvert.DeserializeObject<Usuario>(str);
+            ViewBag.Usuario = objUsuario.NombreUsuario;
+            ViewBag.IdUsuario = objUsuario.IdUsuario;
+
+
             // ViewData["IdEstado"] = new SelectList(_context.Estados, "IdEstado", "IdEstado");
+            //ViewData["IdUsuario"] = new SelectList(_context.Usuarios, "IdUsuario", "NombreUsuario");
+            Guid g = Guid.NewGuid();
+
+            /*ViewBags*/
+            ViewBag.CodVenta = g.ToString().Substring(0, 9); 
+            ViewBag.listCategorias = _context.Categoria.ToList();
+            ViewBag.NroPedidoValue = _context.Venta.Count() + 1;
+            /*ViewData*/
             ViewData["IdEstventa"] = new SelectList(_context.EstadoVenta, "IdEstventa", "NombreEstadov");
-            ViewData["IdUsuario"] = new SelectList(_context.Usuarios, "IdUsuario", "NombreUsuario");
             ViewData["IdMesa"] = new SelectList(_context.Mesas, "IdMesa", "NombreMesa");
             return View();
         }
@@ -84,7 +111,7 @@ namespace SARAPROJECT.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            //ViewData["IdEstado"] = new SelectList(_context.Estados, "IdEstado", "IdEstado", ventum.IdEstado);
+            //ViewData["IdEstado"] = new SelectList(_context.Estados, "IdEstado", "IdEstado", ventum.IdEstado);           
             ViewData["IdEstventa"] = new SelectList(_context.EstadoVenta, "IdEstventa", "NombreEstadov", ventum.IdEstventa);
             ViewData["IdUsuario"] = new SelectList(_context.Usuarios, "IdUsuario", "NombreUsuario", ventum.IdUsuario);
             ViewData["IdMesa"] = new SelectList(_context.Mesas, "IdMesa", "NombreMesa");
