@@ -1,0 +1,46 @@
+﻿
+.container {
+    position: relative;
+}
+
+    .container .slider {
+        display: flex;
+        background: #011b27;
+        padding: 2px;
+        width: 550px;
+        height: 110px;
+        overflow: hidden;
+        scroll-behavior: smooth;
+    }
+
+        .container .slider button {
+            margin: 3px;
+            display: inline-block;
+            width:250px;
+            font-size:10px;
+            justify-content:start;
+            height:100px;
+        }
+
+    .container .control {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: #02293b;
+        cursor: pointer;
+        object-fit: contain;
+        padding: 10px;
+    }
+
+    .container .prev {
+        left: 10px;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .container .next {
+        right: 115px;
+        top: 50%;
+        transform: translate(50%, -50%);
+    }

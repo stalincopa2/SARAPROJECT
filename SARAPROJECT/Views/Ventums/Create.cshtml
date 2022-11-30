@@ -1,25 +1,130 @@
 ﻿@model SARAPROJECT.Models.Ventum
 
 <link rel="stylesheet" href="~/css/myCustomCss.css" />
+<link rel="stylesheet" href="/css/slide.css" />
 @{
     ViewData["Title"] = "NUEVA VENTA";
 }
 
-<div class="row">
-  <div class="row">
-     <div class="col-lg-7">   
 
-     </div>
+<!-- BREADCRUMB-->
+<section class="au-breadcrumb m-t-75">
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="au-breadcrumb-content">
+                        <div class="au-breadcrumb-left">
+                            <span class="au-breadcrumb-span">You are here:</span>
+                            <ul class="list-unstyled list-inline au-breadcrumb__list">
+                                <li class="list-inline-item active">
+                                    <a href="#">Home</a>
+                                </li>
+                                <li class="list-inline-item seprate">
+                                    <span>/</span>
+                                </li>
+                                <li class="list-inline-item">Dashboard</li>
+                            </ul>
+                        </div>
+                        <button class="au-btn au-btn-icon au-btn--green">
+                            <i class="zmdi zmdi-plus"></i>add item</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- END BREADCRUMB-->
+
+
+<div class="row">
+
+<div class="modal" tabindex="-1" id="registrarModal" data-backdrop="static">
+  <div class="modal-dialog">
+      <div class="modal-content"> 
+          <div class="modal-header">
+              Ingresa el monto 
+              <br>
+          </div>
+
+          <div class="modal-body"  id="bodyModalCob" >
+              <div class="container">
+                  <div class="row">
+                      <form name="formModal">
+                          <div class="row form-group">
+                              <div class="col col-md-3">
+                                  <label name="IdPago" class="form-control-label"></label>
+                              </div>
+                              <div class="col-12 col-md-9">
+                                  <select name="IdPago" class ="form-control" asp-items="@ViewBag.Metodo"></select>
+                              </div>
+                          </div>
+                           Total: <input type="text" id="totalModal" style="border:dotted" /><br />
+                           Efectivo:<input type="number" id="Monto" value="0"  onkeyup="calcularCambio()" style="border:dotted" /><br />
+                           Cambio: <input type="number" id="Cambio" style="border:dotted"/><br />
+                      </form>
+                  </div>        
+              </div>
+          </div>
+          <div class="modal-footer" id="footerModalCob">
+               <button class="btnEnviar btn btn-primary" types="button">
+                   Aceptar
+               </button>
+               <button class="btn btn-danger" data-dismiss="modal">
+                   cancelar
+               </button>             
+          </div>
+      </div>
   </div>
+</div>
+
+<div class="modal" tabindex="-1" id="resModalNoCob" data-backdrop="static">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              Ingresa el monto 
+              <br>
+          </div>
+
+          <div class="modal-body" id="bodyModalNoCob">
+              <div class="container">
+                  <div class="row">
+                          <div class="row form-group">
+                              <div class="col col-md-3">
+                                  <label name="IdPago" class="form-control-label"></label>
+                              </div>
+                          </div>
+                  </div>        
+              </div>
+          </div>
+          <div class="modal-footer" >
+               <button class="btnRegistrar  btn btn-primary" types="button">
+                   Aceptar
+               </button>
+               <button class="btn btn-danger" data-dismiss="modal">
+                   cancelar
+               </button>             
+          </div>
+      </div>
+  </div>
+</div>
+
 
   <div class="col-lg-7">
-     <h2 class="title-1 m-b-25">Categorias</h2>
-       <form>
-         @foreach(var pr in ViewBag.listCategorias)
-         {
-          <button  value="@pr.IdCategoria" name="id" id="btnCargarLista" class="cargeList">@pr.Nombre </button>
-         }
-       </form>
+    <h6>Categorias</h6>
+    <div class="container">
+        <img class="control prev" src="/images/img1.png" alt="">
+        <div class="slider">
+             @foreach(var pr in ViewBag.listCategorias)
+             {
+              <button  value="@pr.IdCategoria" name="id" id="btnCargarLista" class="cargeList">@pr.Nombre </button>
+             }
+        </div>
+        <img class="control next" src="/images/img2.png" alt="">
+    </div>
+
+     
+
        <h2 class="title-1 m-b-25">Productos</h2>
 
        <div class="table-responsive table--no-card m-b-40">
@@ -47,7 +152,7 @@
        </div>
   </div>
 
-  <div class="col-lg-5">
+  <div class="col-lg-5" id="comprobante">
     <div class="card">
       <div class="card-header">
           <strong>Detalles:</strong> Ventas
@@ -61,7 +166,7 @@
                       <label asp-for="NroPedido" class="control-label"></label>
                   </div>
                   <div class="col-12 col-md-9">
-                      <input asp-for="NroPedido" class="form-control" value="@ViewBag.NroPedidoValue"/>
+                      <input asp-for="NroPedido" class="form-control" value="@ViewBag.NroPedidoValue" readonly/>
                       <span asp-validation-for="NroPedido" class="text-danger"></span>
                   </div>
               </div>
@@ -113,7 +218,7 @@
                     <label asp-for="FechaVenta" class="control-label"></label>
                   </div>
                   <div class="col-12 col-md-9">                                              
-                    <input asp-for="FechaVenta" class="form-control" />
+                    <input name="FechaVenta" id ="FechaVenta"  class="form-control" />
                     <span asp-validation-for="FechaVenta" class="text-danger"></span>
                   </div>
               </div>                                            
@@ -178,13 +283,21 @@
                   </table>
               </div>
               <div class="card-footer">
-                  <button type="submit" class="btn btn-primary btn-sm">
-                      <i class="fa fa-dot-circle-o"></i> Submit
+                  <button id="cobrarButton" type="button"  data-toggle="modal"  class="btn btn-primary btn-sm" data-target="#registrarModal" onclick="ShowModal()" disabled > 
+                      <i class="fa fa-dot-circle-o"></i>  Cobrar
                   </button>
-                  <button type="reset" class="btn btn-danger btn-sm">
+                  <button id="registrarButton" type="button"  data-toggle="modal"  class="btn btn-primary btn-sm"  data-target="#resModalNoCob" disabled >
+                      <i class="fa fa-dot-circle-o"></i> Registrar pedido
+                  </button>
+
+                <!--   <button type="reset" class="btn btn-danger btn-sm">
                       <i class="fa fa-ban"></i> Reset
-                  </button>
+                  </button> -->
               </div>
+
+                <!--   <button type="reset" class="btn btn-danger btn-sm">
+                      <i class="fa fa-ban"></i> Reset
+                  </button> -->
           </form>
       </div>
     </div>                               
@@ -194,145 +307,58 @@
     <a asp-action="Index">Back to List</a>
 </div>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
-
+<script src="~/lib/decimal/decimal.js"> </script>
 
 <script>
 /*DECLARACION DE VARIABLES  */
 
 let dVentaList; 
-let dVentaListTosend=[];
+let dVentaListTosend=[]; //Lista para enviar al Ajax
+let totalValue= new Decimal(0);
+let totalValueOriginal = 0;
 let total = document.getElementById("Total");
-let totalValue=0;
 let totalInput = document.getElementById("Total");
-
-/*METODOS AJAX */
-$(document).ready(function() {  
-    $(document).on('click', '.cargeList', function(e) {
-        e.preventDefault();
-        var url = "@Url.Action("productosByCategoria","Ventums")";
-        var id = $(this).val();
-        var data = { id: id };
-        console.log(url);
-        $.ajax({ // cabecera de mi metodo ajax
-            url: url,
-            type: "get",
-            dataType: 'json',
-            data: data,
-            befonreSend: function() {
-                console.log("Accion terminada");
-            }
-        }).done(function(data) {
-            dVentaList = Object.create(data); 
-            
-            let productList = ""; 
-            for (let i = 0; i < data.length; i++) {
-              dVentaList[i].cantidad = 0;
-              productList += "<tr  onclick=\"productsToList(this)\" ><td>"+data[i].codProducto+"</td>"+
-                             "<td>"+data[i].nombreProducto+"</td>"+
-                             "<td>"+data[i].precio+"</td>"+
-                             "<td> <img  width=\"50\" heigth=\"50\"  src=\"/Content/imgProducts/"+ data[i].fotoProducto+ "\" > </td> </tr>";
-            }
-            
-
-            document.getElementById("productByCat").innerHTML = productList; 
-        })
-    });
-});
+let cambioInput = document.getElementById("Cambio"); 
+let monto = document.getElementById("Monto");
+let urlProuctosByCategoria="@Url.Action("productosByCategoria","Ventums")"; 
+let urlPedidoRegistro = "@Url.Action("InsertVentWithDetails","Ventums")";
+let urlPrintPreticket = "@Url.Action("preTicket","Ventums")";
 
 
 
-/*AGREGAR PRODUCTOS A LA LISTA */
-function productsToList(x) {
-   
-    var i = Math.abs(x.rowIndex - 1);
-    var productsToPayList = " "; 
 
-    var positionInList = findProductoById(dVentaList[i].idProducto);
-    document.getElementById("productsToPayList");
-
-    if (positionInList>=0) {  
-           var idPr = dVentaListTosend[positionInList].idProducto; 
-
-           totalValue -= (dVentaListTosend[positionInList].cantidad * dVentaListTosend[positionInList].precio);
-
-           dVentaListTosend[positionInList].cantidad++;
-           var cantidadInput =  document.getElementById("itemList"+idPr);
-           var totalDiv= document.getElementById("totaldv"+idPr);
-
-           cantidadInput.setAttribute("value",  dVentaListTosend[positionInList].cantidad);
-           totalDiv.innerHTML = (dVentaListTosend[positionInList].cantidad * dVentaListTosend[positionInList].precio);
-
-           totalValue += (dVentaListTosend[positionInList].cantidad * dVentaListTosend[positionInList].precio);
-    } else {
-            
-            dVentaListTosend.push(dVentaList[i]);
-            var posicionActual =  dVentaListTosend.length-1; 
-            dVentaListTosend[posicionActual].cantidad++;
-
-            totalValue += (dVentaListTosend[posicionActual].cantidad * dVentaListTosend[posicionActual].precio);
-           
-
-            productsToPayList += " <tr><td> <input onkeyup=\"modifyCant(this)\" onchange=\"modifyCant(this)\" type=\"number\" id=\"itemList"+dVentaListTosend[posicionActual].idProducto + "\" value = \"" + dVentaListTosend[posicionActual].cantidad + "\" style =\"width:100px;\" /></td>" +
-            "<td>" + dVentaListTosend[posicionActual].nombreProducto + "</td>" +
-            "<td>" +dVentaListTosend[posicionActual].precio + "</td>" +
-            "<td id=\"totaldv"+dVentaListTosend[posicionActual].idProducto +"\">"+  (dVentaListTosend[posicionActual].cantidad * dVentaListTosend[posicionActual].precio) + "</td>"+
-            "<td> " + "<button class=\"item delete\" data-toggle=\"modal\" title=\"Eliminar\" value=\""+ dVentaListTosend[posicionActual].idProducto  +"\" id=\"btnDelete\"> "+
-            "<i class=\"zmdi zmdi-delete\"></i> </button>"+
-            "  </td> </tr>";
-            document.getElementById("productsToPayList").innerHTML+= productsToPayList;
-     }
-     totalInput.setAttribute("value", Math.abs(totalValue));
+function ShowModal() {
+    document.getElementById("totalModal").value = document.getElementById("Total").value;
 }
 
-$(document).on('click', '.delete', function(event) {
-  event.preventDefault();
-  $(this).closest('tr').remove();
-  var id=  $(this).val();
-  var posicion = findProductoById(id);
-
-  totalValue -=dVentaListTosend[posicion].cantidad * dVentaListTosend[posicion].precio;
-  dVentaListTosend[posicion].cantidad = 0;
-
-  totalInput.setAttribute("value", Math.abs(totalValue));
-  dVentaListTosend.splice(posicion, 1);
-
-});
-
-
-function findProductoById(idProducto) {
-
-        if (dVentaListTosend.length == 0) {
-            return -1;
-        }
-
-        for (let i = 0; i < dVentaListTosend.length; i++) {
-
-            if (dVentaListTosend[i].idProducto == idProducto) {
-                return i;
-            }
-
-        }
-   return -1;
+function calcularCambio() {
+    var cambio = new Decimal(monto.value -totalInput.value) ;
+    if (cambio < 0)
+        cambio =0; 
+        
+    document.getElementById("Cambio").setAttribute("value", cambio.toFixed(2)); 
 }
 
-function modifyCant(elemento){
+window.onload = function () {
+    var date = new Date();
 
-  var idInput = elemento.id;
-  var idPr =  idInput.substring(8,(idInput.length)); /*itemList- */
-  var positionInList = findProductoById(idPr);
+    var Mes = String(date.getMonth() + 1).padStart(2, '0');
+    var Dia = String(date.getDate()).padStart(2, '0');
+    var Anio = date.getFullYear();
+ 
+    document.getElementById("FechaVenta").value = Anio + "-" + Mes + "-" + Dia; 
+};
 
-  totalValue -= (dVentaListTosend[positionInList].cantidad * dVentaListTosend[positionInList].precio);
-  
-  var totalDiv= document.getElementById("totaldv"+idPr);
-  dVentaListTosend[positionInList].cantidad = elemento.value;
 
-  totalValue += (dVentaListTosend[positionInList].cantidad * dVentaListTosend[positionInList].precio);
-  totalInput.setAttribute("value", Math.abs(totalValue));
-  totalDiv.innerHTML = (dVentaListTosend[positionInList].cantidad * dVentaListTosend[positionInList].precio);
-}
 
 
 </script>
+<script src="~/js/createVentaAjax.js"> </script>
+<script src="~/js/productosByCategoriaAjax.js"> </script>
+<script src="~/js/vRegistroAjaxCobrado.js"> </script>
+<script src="~/js/vRegistroAjaxNoCobrado.js"> </script>
+<script src="~/js/slide.js"></script>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

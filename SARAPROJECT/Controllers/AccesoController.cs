@@ -33,6 +33,14 @@ namespace SARAPROJECT.Controllers
                         ViewBag.Error = "Usuario o contracenia Incorrecta";
                         return View();
                     }
+                    if (oUser.Sexo == "M")
+                    {
+                    HttpContext.Session.SetString("avatarUser", "/images/icon/avatar-male2.png");
+                    }
+                    else
+                    {
+                    HttpContext.Session.SetString("avatarUser", "/images/icon/avatar-female.png");
+                    }
                     string usuario = JsonConvert.SerializeObject(oUser);
                     HttpContext.Session.SetString("Usuario", usuario);
                     return RedirectToAction("Index", "Home");

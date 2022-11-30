@@ -24,6 +24,7 @@ namespace SARAPROJECT.Controllers
         public async Task<IActionResult> Index()
         {
             var sARADBContext = _context.Productos.Include(p => p.IdCategoriaNavigation);
+            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
             return View(await sARADBContext.ToListAsync());
         }
 
@@ -42,7 +43,7 @@ namespace SARAPROJECT.Controllers
             {
                 return NotFound();
             }
-
+            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
             return View(producto);
         }
 
@@ -74,6 +75,7 @@ namespace SARAPROJECT.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
             ViewData["IdCategoria"] = new SelectList(_context.Categoria, "IdCategoria", "Nombre", producto.IdCategoria);
             return View(producto);
         }
@@ -139,6 +141,7 @@ namespace SARAPROJECT.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
             ViewData["IdCategoria"] = new SelectList(_context.Categoria, "IdCategoria", "Nombre", producto.IdCategoria);
             return View(producto);
         }
@@ -158,7 +161,7 @@ namespace SARAPROJECT.Controllers
             {
                 return NotFound();
             }
-
+            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
             return View(producto);
         }
 

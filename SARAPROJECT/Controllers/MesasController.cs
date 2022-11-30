@@ -23,6 +23,7 @@ namespace SARAPROJECT.Controllers
         public async Task<IActionResult> Index()
         {
             var sARADBContext = _context.Mesas.Include(m => m.IdSalonNavigation);
+            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
             return View(await sARADBContext.ToListAsync());
         }
 
@@ -41,7 +42,7 @@ namespace SARAPROJECT.Controllers
             {
                 return NotFound();
             }
-
+            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
             return View(mesa);
         }
 
@@ -49,6 +50,7 @@ namespace SARAPROJECT.Controllers
         public IActionResult Create()
         {
             ViewData["IdSalon"] = new SelectList(_context.Salons, "IdSalon", "NombreSalon");
+            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
             return View();
         }
 
@@ -67,6 +69,7 @@ namespace SARAPROJECT.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
             ViewData["IdSalon"] = new SelectList(_context.Salons, "IdSalon", "NombreSalon", mesa.IdSalon);
             return View(mesa);
         }
@@ -84,6 +87,7 @@ namespace SARAPROJECT.Controllers
             {
                 return NotFound();
             }
+            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
             ViewData["IdSalon"] = new SelectList(_context.Salons, "IdSalon", "IdSalon", mesa.IdSalon);
             return View(mesa);
         }
@@ -121,6 +125,7 @@ namespace SARAPROJECT.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
             ViewData["IdSalon"] = new SelectList(_context.Salons, "IdSalon", "IdSalon", mesa.IdSalon);
             return View(mesa);
         }
@@ -140,7 +145,7 @@ namespace SARAPROJECT.Controllers
             {
                 return NotFound();
             }
-
+            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
             return View(mesa);
         }
 

@@ -21,7 +21,8 @@ namespace SARAPROJECT.Controllers
         // GET: Sucursals
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Sucursals.ToListAsync());
+            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
+            return View(await _context.Sucursals.ToListAsync());
         }
 
         // GET: Sucursals/Details/5

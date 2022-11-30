@@ -38,13 +38,13 @@
         <aside class="menu-sidebar2">
             <div class="logo">
                 <a href="#">
-                    <img src="~/images/icon/logo-white.png" alt="Cool Admin" />
+                   SARA VENTAS <!--<img src="~/images/logo.jpg" alt="Cafeteria Sara logo" width="40" /> -->
                 </a>
             </div>
             <div class="menu-sidebar2__content js-scrollbar1">
                 <div class="account2">
                     <div class="image img-cir img-120">
-                        <img src="~/images/icon/avatar-big-01.jpg" alt="John Doe" />
+                        <img src="@ViewBag.Avatar" alt="LLogo del icono de usuario" />
                     </div>
                     <h4 class="name">@ViewBag.Usuario</h4>
                     <a asp-controller="Home" asp-action="Logout" >Sign out</a>
@@ -53,42 +53,42 @@
                     <ul class="list-unstyled navbar__list">
                         <li>
                             <a asp-area="" asp-controller="Home" asp-action="Index">
-                                <i class="fas fa-chart-bar"></i>Homex</a>
-                            <span class="inbox-num">3</span>
+                                <i class="fas fa-home"></i>Home</a>
+                           <!--<span class="inbox-num">3</span> --> 
                         </li>
                         <li>
                             <a asp-area="" asp-controller="Sucursals" asp-action="Index">
-                                <i class="fas fa-shopping-basket"></i>Sucursales</a>
+                                <i class="fas  fa-sitemap"></i>Sucursales</a>
                         </li>
                         <li>
                             <a asp-area="" asp-controller="Categoriums" asp-action="Index">
-                                <i class="fas fa-shopping-basket"></i>Categorias</a>
+                                <i class="fas fa-tasks"></i>Categorias</a>
                         </li>
                         <li>
                             <a asp-area="" asp-controller="Productoes" asp-action="Index">
-                                <i class="fas fa-shopping-basket"></i>Productos</a>
+                                <i class="fas fa-archive"></i>Productos</a>
                         </li>
 
                         <li>
                             <a asp-area=""  asp-controller="Salons" asp-action="Index">
-                                <i class="fas fa-shopping-basket"></i>Salones</a>
+                                <i class="fas fa-coffee"></i>Salones</a>
                         </li>
 
                         <li>
                             <a asp-area="" asp-controller="Mesas" asp-action="Index">
-                                <i class="fas fa-shopping-basket"></i>Mesas</a>
+                                <i class="fas  fa-eraser"></i>Mesas</a>
                         </li>
                         <li>
                             <a asp-area="" asp-controller="Ventums" asp-action="Index">
-                                <i class="fas fa-shopping-basket"></i>Ventas</a>
+                                <i class="fas  fa-tags"></i>Ventas</a>
                         </li>
                         <li>
                             <a  asp-controller="Ventums" asp-action="Create">
-                                <i class="fas fa-shopping-basket"></i>Nueva Venta</a>
+                                <i class="fas  fa-ticket"></i>Nueva Venta</a>
                         </li>
                         <li>
                             <a  asp-controller="Usuarios" asp-action="Index">
-                                <i class="fas fa-shopping-basket"></i>Usuarios</a>
+                                <i class="fas fa-users"></i>Usuarios</a>
                         </li>
 
                     </ul>
@@ -106,7 +106,7 @@
                         <div class="header-wrap2">
                             <div class="logo d-block d-lg-none">
                                 <a href="#">
-                                    <img src="~/images/icon/logo-white.png" alt="CoolAdmin" />
+                                    <img src="~/images/logo.jpg" alt="Cafeteria Sara logo" width="40"  />
                                 </a>
                             </div>
                             <div class="header-button2">
@@ -188,15 +188,15 @@
             <aside class="menu-sidebar2 js-right-sidebar d-block d-lg-none">
                 <div class="logo">
                     <a href="#">
-                        <img src="~/images/icon/logo-white.png" alt="Cool Admin" />
+                        <img src="~/images/logo.jpg" alt="logo de cafeteria sara" width="40" />
                     </a>
                 </div>
                 <div class="menu-sidebar2__content js-scrollbar2">
                     <div class="account2">
                         <div class="image img-cir img-120">
-                            <img src="~/images/icon/avatar-big-01.jpg" alt="John Doe" />
+                            <img src="@ViewBag.Avatar" alt="Logo del avatar del usuario" />
                         </div>
-                        <h4 class="name">john doe</h4>
+                        <h4 class="name">@ViewBag.Usuario</h4>
                         <a asp-area="" asp-controller="Home" asp-action="Logout">Sign out</a>
                     </div>
                     <nav class="navbar-sidebar2">
@@ -242,34 +242,7 @@
             </aside>
             <!-- END HEADER DESKTOP-->
 
-            <!-- BREADCRUMB-->
-            <section class="au-breadcrumb m-t-75">
-                <div class="section__content section__content--p30">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="au-breadcrumb-content">
-                                    <div class="au-breadcrumb-left">
-                                        <span class="au-breadcrumb-span">You are here:</span>
-                                        <ul class="list-unstyled list-inline au-breadcrumb__list">
-                                            <li class="list-inline-item active">
-                                                <a href="#">Home</a>
-                                            </li>
-                                            <li class="list-inline-item seprate">
-                                                <span>/</span>
-                                            </li>
-                                            <li class="list-inline-item">Dashboard</li>
-                                        </ul>
-                                    </div>
-                                    <button class="au-btn au-btn-icon au-btn--green">
-                                        <i class="zmdi zmdi-plus"></i>add item</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <!-- END BREADCRUMB-->
+
             <div class="container">
                 <main role="main" class="pb-3">
                     @RenderBody()

@@ -1,0 +1,82 @@
+﻿@model SARAPROJECT.Models.Ventum
+
+@{
+    ViewData["Title"] = "Edit";
+}
+<style>
+    .printContet p, table, table tbody{
+    font-size:9px;
+    }
+    .printContent div{
+        margin: 100px auto 100px;
+    }
+</style>
+<div class="printContent" id="printContent">
+<div>
+  <img src="~/images/logo.jpg" alt="Logo de la empresa" width="70" />  
+</div>
+
+<p>========= Preticket ===========</p>
+<p>NOMBRE DE LA CAFETERIA </p>
+<p>RUC</p>
+<p>DIRECCION</p>
+<p>SUCURSAL</p>
+<p>TELEFONO</p>
+<p>CORREO</p>
+<p>======== Venta Rapida==========</p>
+<p>Pedido Nro: @Html.DisplayFor(model => model.NroPedido)</p>
+<p>Fecha: @Html.DisplayFor(model => model.FechaVenta)</p>
+<p>Atendido por:@Html.DisplayFor(model => model.IdUsuario)</p>
+<p>======= Datos del cliente ======</p>
+<p>Nombre:...................</p>
+<p>Identificacion:...........</p>
+<p>Correo:...................</p>
+<p>Telefono:.................</p>
+<p>Dirección:................</p>
+<br>
+<table>
+    <thead>
+        <tr>
+            <th>
+                Cant
+            </th>
+            <th>
+                Descripción
+            </th>
+            <th>
+                P.U
+            </th>
+            <th>
+                Total
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.DetalleVenta) {
+        <tr>
+            
+           <td>@Html.DisplayFor(itemModel =>item.Cantidad)</td> 
+           <td>@Html.DisplayFor(itemModel =>item.IdProductoNavigation.NombreProducto)</td>
+           <td>@Html.DisplayFor(itemModel =>item.Precio)</td>
+           <td>2.50</td>
+        </tr>
+}
+    </tbody>
+</table>
+<p>Subtotal:@Html.DisplayFor(model=>model.Total)</p>
+<p>Subtotal 0%:@Html.DisplayFor(model=>model.Total)</p>
+<p>Total:@Html.DisplayFor(model=>model.Total)</p>
+<p>Metodo de pago:</p>
+<p>Efectivo: @ViewBag.Efectivo</p>
+<p>Cambio: @ViewBag.Cambio</p>
+</div>
+
+<script>
+    window.onload = function () {
+        var printContent = document.getElementById("printContent").innerHTML;
+        var bodyContent = document.body.innerHTML;
+        document.body.innerHTML= printContent;
+        window.print();
+        };
+
+</script>

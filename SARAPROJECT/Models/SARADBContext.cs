@@ -251,7 +251,7 @@ namespace SARAPROJECT.Models
                     .IsUnicode(false)
                     .HasColumnName("OBSERVACION");
 
-                entity.Property(e => e.PrecioUproduct)
+                entity.Property(e => e.Precio)
                     .HasColumnType("decimal(16, 2)")
                     .HasColumnName("PRECIO_UPRODUCT");
 

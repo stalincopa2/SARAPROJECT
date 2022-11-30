@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SARAPROJECT.Models
 {
@@ -18,7 +20,7 @@ namespace SARAPROJECT.Models
         public int IdEstventa { get; set; }
        //  public int IdEstado { get; set; }
        //public int IdMetodo { get; set; }
-       // public string Nombre { get; set; } = null!;
+       // public strIdUsuario ing Nombre { get; set; } = null!;
         public string CodVenta { get; set; } = null!;
         public DateTime FechaVenta { get; set; }
         public decimal Total { get; set; }
@@ -26,9 +28,12 @@ namespace SARAPROJECT.Models
         public string? ClaveAcceso { get; set; }
         public int? NroPedido { get; set; }
 
-      //  public virtual Estado IdEstadoNavigation { get; set; } = null!;
-
+        //  public virtual Estado IdEstadoNavigation { get; set; } = null!;
+        [BindNever]
+        [ForeignKey("IdEstventa")]
         public virtual EstadoVentum IdEstventaNavigation { get; set; } = null!;
+        [BindNever]
+        [ForeignKey("IdUsuario")]
         public virtual Usuario IdUsuarioNavigation { get; set; } = null!;
 
         public virtual ICollection<ClienteVentum> ClienteVenta { get; set; }

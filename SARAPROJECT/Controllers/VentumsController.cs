@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SARAPROJECT.Models;
+using SARAPROJECT.Service;
 
 namespace SARAPROJECT.Controllers
 {
@@ -30,6 +32,7 @@ namespace SARAPROJECT.Controllers
             var objUsuario = JsonConvert.DeserializeObject<Usuario>(str);
             ViewBag.Usuario = objUsuario.NombreUsuario;
             ViewBag.IdUsuario = objUsuario.IdUsuario;
+            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
 
             var sARADBContext = _context.Venta.Include(v => v.IdEstventaNavigation).Include(v => v.IdUsuarioNavigation);
 
@@ -55,6 +58,38 @@ namespace SARAPROJECT.Controllers
             {
                 return NotFound();
             }
+            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
+            return View(ventum);
+        }
+
+
+        //POST VETIM/InsertVentWithDetails
+        [HttpPost]
+        public async Task<IActionResult> InsertVentWithDetails([FromBody] Ventum ventum)
+        {
+
+            _context.Add(ventum);
+            await _context.SaveChangesAsync();
+            var vetumActual = _context.Venta.OrderByDescending(a => a.IdVenta).FirstOrDefault();
+            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
+            return Json(new {respuesta= vetumActual.IdVenta});
+        }
+
+
+        //POST VETUM/preTicket
+        [HttpPost]
+        public IActionResult preTicket(int idVenta)
+        {
+            calcularTotal ct = new calcularTotal();
+            var ventum = _context.Venta.Find(idVenta);
+
+            ventum.DetalleVenta = _context.DetalleVenta.Where(dv => dv.IdVenta == ventum.IdVenta).Include(dv=>dv.IdProductoNavigation).ToArray();
+            List<DetPago> dtList =  _context.DetPagos.Where(dv => dv.IdVenta == idVenta).ToList();
+            decimal efectivo = ct.retornarTotal(dtList);
+
+            ViewBag.Cambio = ct.calcularCambio(ventum.Total, efectivo); 
+            ViewBag.Efectivo = efectivo;
+            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
 
             return View(ventum);
         }
@@ -68,6 +103,7 @@ namespace SARAPROJECT.Controllers
                 id = 1;
             }
             var productosByCategoria = _context.Productos.Where(p => p.IdCategoria == id).ToList();
+
             return Json(productosByCategoria);
         }
 
@@ -93,8 +129,11 @@ namespace SARAPROJECT.Controllers
             ViewBag.listCategorias = _context.Categoria.ToList();
             ViewBag.NroPedidoValue = _context.Venta.Count() + 1;
             /*ViewData*/
+            ViewBag.Metodo = new SelectList(_context.MetodoPagos, "IdMetodo", "Nombre"); 
             ViewData["IdEstventa"] = new SelectList(_context.EstadoVenta, "IdEstventa", "NombreEstadov");
             ViewData["IdMesa"] = new SelectList(_context.Mesas, "IdMesa", "NombreMesa");
+
+            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
             return View();
         }
 
@@ -105,6 +144,10 @@ namespace SARAPROJECT.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdVenta,IdMesa,IdUsuario,IdEstventa,CodVenta,FechaVenta,Total,NroFactura,ClaveAcceso,NroPedido")] Ventum ventum)
         {
+
+            ModelState["IdEstVentaNavigation"].ValidationState = ModelValidationState.Valid;
+            ModelState["IdUsuarioNavigation"].ValidationState = ModelValidationState.Valid;
+
             if (ModelState.IsValid)
             {
                 _context.Add(ventum);
@@ -115,6 +158,8 @@ namespace SARAPROJECT.Controllers
             ViewData["IdEstventa"] = new SelectList(_context.EstadoVenta, "IdEstventa", "NombreEstadov", ventum.IdEstventa);
             ViewData["IdUsuario"] = new SelectList(_context.Usuarios, "IdUsuario", "NombreUsuario", ventum.IdUsuario);
             ViewData["IdMesa"] = new SelectList(_context.Mesas, "IdMesa", "NombreMesa");
+
+            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
             return View(ventum);
         }
 
@@ -134,6 +179,8 @@ namespace SARAPROJECT.Controllers
            // ViewData["IdEstado"] = new SelectList(_context.Estados, "IdEstado", "IdEstado", ventum.IdEstado);
             ViewData["IdEstventa"] = new SelectList(_context.EstadoVenta, "IdEstventa", "NombreEstadov", ventum.IdEstventa);
             ViewData["IdUsuario"] = new SelectList(_context.Usuarios, "IdUsuario", "NombreUsuario", ventum.IdUsuario);
+
+            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
             return View(ventum);
         }
 
@@ -172,6 +219,7 @@ namespace SARAPROJECT.Controllers
            // ViewData["IdEstado"] = new SelectList(_context.Estados, "IdEstado", "IdEstado", ventum.IdEstado);
             ViewData["IdEstventa"] = new SelectList(_context.EstadoVenta, "IdEstventa", "NombreEstadov", ventum.IdEstventa);
             ViewData["IdUsuario"] = new SelectList(_context.Usuarios, "IdUsuario", "NombreUsuario", ventum.IdUsuario);
+            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
             return View(ventum);
         }
 
@@ -212,6 +260,7 @@ namespace SARAPROJECT.Controllers
             }
             
             await _context.SaveChangesAsync();
+            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
             return RedirectToAction(nameof(Index));
         }
 

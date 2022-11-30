@@ -21,7 +21,8 @@ namespace SARAPROJECT.Controllers
         // GET: Categoriums
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Categoria.ToListAsync());
+            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
+            return View(await _context.Categoria.ToListAsync());
         }
 
         // GET: Categoriums/Details/5
@@ -38,7 +39,7 @@ namespace SARAPROJECT.Controllers
             {
                 return NotFound();
             }
-
+            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
             return View(categorium);
         }
 
@@ -61,6 +62,7 @@ namespace SARAPROJECT.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
             return View(categorium);
         }
 
@@ -112,6 +114,7 @@ namespace SARAPROJECT.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
             return View(categorium);
         }
 
@@ -149,11 +152,13 @@ namespace SARAPROJECT.Controllers
             }
             
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
         private bool CategoriumExists(int id)
         {
+
           return _context.Categoria.Any(e => e.IdCategoria == id);
         }
     }
