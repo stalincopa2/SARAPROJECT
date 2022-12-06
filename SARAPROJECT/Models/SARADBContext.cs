@@ -10,7 +10,6 @@ namespace SARAPROJECT.Models
         public SARADBContext()
         {
         }
-
         public SARADBContext(DbContextOptions<SARADBContext> options)
             : base(options)
         {

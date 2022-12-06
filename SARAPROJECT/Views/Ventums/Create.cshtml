@@ -1,13 +1,13 @@
 ﻿@model SARAPROJECT.Models.Ventum
 
-<link rel="stylesheet" href="~/css/myCustomCss.css" />
-<link rel="stylesheet" href="/css/slide.css" />
 @{
     ViewData["Title"] = "NUEVA VENTA";
 }
 
 
-<!-- BREADCRUMB-->
+<link rel="stylesheet" href="~/css/myCustomCss.css" />
+<link rel="stylesheet" href="/css/slide.css" />
+<!-- BREADCRUMB
 <section class="au-breadcrumb m-t-75">
     <div class="section__content section__content--p30">
         <div class="container-fluid">
@@ -34,8 +34,204 @@
         </div>
     </div>
 </section>
-<!-- END BREADCRUMB-->
+END BREADCRUMB-->
 
+  <div class="row" style="margin-top:20px">
+    <div class="col-lg-7">
+        <div class="container">
+        <h2 class="title-1 m-b-25">Categorias</h2>
+        <img class="control prev" src="/images/img1.png" alt="">
+        <div class="slider">
+             @foreach(var pr in ViewBag.listCategorias)
+             {
+              <button  value="@pr.IdCategoria" name="id" id="btnCargarLista" class="cargeList">@pr.Nombre </button>
+             }
+        </div>
+        <img class="control next" src="/images/img2.png" alt="">
+
+        </div>
+        <div class="row">
+            <div class="col-lg-10">
+                <h2 class="title-1 m-b-25">Productos</h2>
+               <div class="ventaDetalle table-responsive table--no-card m-b-40">
+                  <table class="table table-borderless table-striped table-earning">
+                      <thead >
+                         <tr>
+                           <th>
+                             COD
+                           </th>
+                         <th>
+                            DESCRIPCION
+                         </th>
+                         <th class="text-right">
+                            PRECIO
+                         </th>
+                         <th>
+                            FOTO
+                         </th>
+                         </tr>
+                      </thead>
+                      <tbody id="productByCat">
+                                            
+                      </tbody>
+                  </table>
+               </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <h2 class="title-1 m-b-25">Venta</h2>
+        <div class="au-card au-card-top-countries">
+                <div class="table-responsive">
+                  <div class="card-body card-block">
+                      <div class="ventaDetalle"> 
+                         <div asp-validation-summary="ModelOnly" class="text-danger"></div> 
+                           <!--NRO PEDIDO-->
+                          <div class="row form-group">
+                              <div class="col col-md-3">
+                                  <label asp-for="NroPedido" class="control-label"></label>
+                              </div>
+                              <div class="col-12 col-md-9">
+                                  <input asp-for="NroPedido" class="form-control" value="@ViewBag.NroPedidoValue" readonly/>
+                                  <span asp-validation-for="NroPedido" class="text-danger"></span>
+                              </div>
+                          </div>
+
+                          <!--ID MESA-->
+                          <div class="row form-group">
+                              <div class="col col-md-3">
+                                  <label asp-for="IdMesa" class="form-control-label"></label>
+                              </div>
+                              <div class="col-12 col-md-9">
+                                  <select asp-for="IdMesa" class ="form-control" asp-items="ViewBag.IdMesa"></select>
+                                  <span asp-validation-for="IdMesa" class="text-danger"></span>
+                              </div>
+                          </div>
+
+                          <!--ID USUARIO-->
+                          <div class="row form-group" style="display:none">
+                              <div class="col col-md-3">
+                                <label asp-for="IdUsuario" class="control-label"></label>
+                              </div>
+                              <div class="col-12 col-md-9">                                              
+                                <input type="hidden" asp-for="IdUsuario" value="@ViewBag.IdUsuario"/>
+                              </div>
+                          </div>
+                          <!--ID ES VENTA-->
+                          <div class="row form-group" style="display:none">
+                              <div class="col col-md-3">
+                                <label asp-for="IdEstventa" class="control-label"></label>
+                              </div>
+                              <div class="col-12 col-md-9" >                                              
+                                <select asp-for="IdEstventa" class ="form-control" asp-items="ViewBag.IdEstventa" ></select>
+                              </div>
+                          </div>
+
+                          <!--CODIGO VENTA-->
+                          <div class="row form-group"  >
+                              <div class="col col-md-3">
+                                <label asp-for="CodVenta" class="control-label"></label>
+                              </div>
+                              <div class="col-12 col-md-9">                                              
+                                <input asp-for="CodVenta" class="form-control" value="@ViewBag.CodVenta" />
+                                <span asp-validation-for="CodVenta" class="text-danger"></span>
+                              </div>
+                          </div>
+
+                          <!--FECHA DE  VENTA-->
+                          <div class="row form-group" >
+                              <div class="col col-md-3">
+                                <label asp-for="FechaVenta" class="control-label"></label>
+                              </div>
+                              <div class="col-12 col-md-9">                                              
+                                <input name="FechaVenta" id ="FechaVenta"  class="form-control" />
+                                <span asp-validation-for="FechaVenta" class="text-danger"></span>
+                              </div>
+                          </div>                                            
+                          <!--TOTAL  VENTA-->
+                          <div class="row form-group">
+                              <div class="col col-md-3">
+                                <label asp-for="Total" class="control-label"></label>
+                              </div>
+                              <div class="col-12 col-md-9">                                              
+                                <input asp-for="Total" class="form-control"  value="0" readonly/>
+                                <span asp-validation-for="Total" class="text-danger"></span>
+                              </div>
+                          </div>  
+                         <!-- 
+                          <div class="form-group">
+                              <label asp-for="IdEstado" class="control-label"></label>
+                              <select asp-for="IdEstado" class ="form-control" asp-items="ViewBag.IdEstado"></select>
+                          </div>-->
+                          <!-- 
+                          <div class="form-group">
+                              <label asp-for="IdMetodo" class="control-label"></label>
+                              <input asp-for="IdMetodo" class="form-control" />
+                              <span asp-validation-for="IdMetodo" class="text-danger"></span>
+                          </div>
+                          <div class="form-group">
+                              <label asp-for="Nombre" class="control-label"></label>
+                              <input asp-for="Nombre" class="form-control" />
+                              <span asp-validation-for="Nombre" class="text-danger"></span>
+                          </div>-->
+                          <div class="form-group text-hide">
+                              <label asp-for="NroFactura" class="control-label"></label>
+                              <input asp-for="NroFactura" class="form-control"  type="hidden" value="SN"/>
+                              <span asp-validation-for="NroFactura" class="text-danger"></span>
+                          </div>
+                          <div class="form-group text-hide">
+                              <label asp-for="ClaveAcceso" class="control-label"></label>
+                              <input asp-for="ClaveAcceso" class="form-control"  type="hidden" value="SN"/>
+                              <span asp-validation-for="ClaveAcceso" class="text-danger"></span>
+                          </div>
+                    </div>
+                      
+                              <table class="table" style=" font-size:11px; width : 479px; margin : 0 0 10px 0; padding : 0 0 0 0; border-spacing : 0 0; border-collapse : collapse;">
+                                  <thead>
+                                      <tr>
+                                          <th>
+                                              CANT
+                                          </th>
+                                          <th>
+                                              DESCRIPCION
+                                         </th>
+                                          <th >
+                                              PRECIO
+                                          </th>
+                                          <th>
+                                              TOTAL
+                                          </th>
+                                          <th>
+
+                                          </th>
+                                      </tr>
+                                  </thead>
+                                  <tbody id="productsToPayList">
+  
+                                  </tbody>
+                              </table>
+                      
+                          <div class="card-footer">
+                              <button id="cobrarButton" type="button"  data-toggle="modal"  class="btn btn-primary btn-sm" data-target="#registrarModal" onclick="ShowModal()" disabled > 
+                                  <i class="fa fa-dot-circle-o"></i>  Cobrar
+                              </button>
+                              <button id="registrarButton" type="button"  data-toggle="modal"  class="btn btn-primary btn-sm"  data-target="#resModalNoCob" disabled >
+                                  <i class="fa fa-dot-circle-o"></i> Registrar pedido
+                              </button>
+
+                            <!--   <button type="reset" class="btn btn-danger btn-sm">
+                                  <i class="fa fa-ban"></i> Reset
+                              </button> -->
+                          </div>
+
+                            <!--   <button type="reset" class="btn btn-danger btn-sm">
+                                  <i class="fa fa-ban"></i> Reset
+                              </button> -->
+                  </div>
+                </div>
+        </div>
+    </div>
+</div>
 
 <div class="row">
 
@@ -108,200 +304,7 @@
       </div>
   </div>
 </div>
-
-
-  <div class="col-lg-7">
-    <h6>Categorias</h6>
-    <div class="container">
-        <img class="control prev" src="/images/img1.png" alt="">
-        <div class="slider">
-             @foreach(var pr in ViewBag.listCategorias)
-             {
-              <button  value="@pr.IdCategoria" name="id" id="btnCargarLista" class="cargeList">@pr.Nombre </button>
-             }
-        </div>
-        <img class="control next" src="/images/img2.png" alt="">
-    </div>
-
-     
-
-       <h2 class="title-1 m-b-25">Productos</h2>
-
-       <div class="table-responsive table--no-card m-b-40">
-          <table class="table table-borderless table-striped table-earning">
-              <thead>
-                 <tr>
-                   <th>
-                     CODIGO
-                   </th>
-                 <th>
-                    DESCRIPCION
-                 </th>
-                 <th class="text-right">
-                    PRECIO
-                 </th>
-                 <th>
-                    FOTO
-                 </th>
-                 </tr>
-              </thead>
-              <tbody id="productByCat">
-                                            
-              </tbody>
-          </table>
-       </div>
-  </div>
-
-  <div class="col-lg-5" id="comprobante">
-    <div class="card">
-      <div class="card-header">
-          <strong>Detalles:</strong> Ventas
-      </div>
-      <div class="card-body card-block">
-          <form asp-action="Create"  class="form-horizontal">
-              <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-               <!--NRO PEDIDO-->
-              <div class="row form-group">
-                  <div class="col col-md-3">
-                      <label asp-for="NroPedido" class="control-label"></label>
-                  </div>
-                  <div class="col-12 col-md-9">
-                      <input asp-for="NroPedido" class="form-control" value="@ViewBag.NroPedidoValue" readonly/>
-                      <span asp-validation-for="NroPedido" class="text-danger"></span>
-                  </div>
-              </div>
-
-              <!--ID MESA-->
-              <div class="row form-group">
-                  <div class="col col-md-3">
-                      <label asp-for="IdMesa" class="form-control-label"></label>
-                  </div>
-                  <div class="col-12 col-md-9">
-                      <select asp-for="IdMesa" class ="form-control" asp-items="ViewBag.IdMesa"></select>
-                      <span asp-validation-for="IdMesa" class="text-danger"></span>
-                  </div>
-              </div>
-
-              <!--ID USUARIO-->
-              <div class="row form-group" style="display:none">
-                  <div class="col col-md-3">
-                    <label asp-for="IdUsuario" class="control-label"></label>
-                  </div>
-                  <div class="col-12 col-md-9">                                              
-                    <input type="hidden" asp-for="IdUsuario" value="@ViewBag.IdUsuario"/>
-                  </div>
-              </div>
-              <!--ID ES VENTA-->
-              <div class="row form-group" style="display:none">
-                  <div class="col col-md-3">
-                    <label asp-for="IdEstventa" class="control-label"></label>
-                  </div>
-                  <div class="col-12 col-md-9" >                                              
-                    <select asp-for="IdEstventa" class ="form-control" asp-items="ViewBag.IdEstventa" ></select>
-                  </div>
-              </div>
-
-              <!--CODIGO VENTA-->
-              <div class="row form-group"  >
-                  <div class="col col-md-3">
-                    <label asp-for="CodVenta" class="control-label"></label>
-                  </div>
-                  <div class="col-12 col-md-9">                                              
-                    <input asp-for="CodVenta" class="form-control" value="@ViewBag.CodVenta" />
-                    <span asp-validation-for="CodVenta" class="text-danger"></span>
-                  </div>
-              </div>
-
-              <!--FECHA DE  VENTA-->
-              <div class="row form-group" >
-                  <div class="col col-md-3">
-                    <label asp-for="FechaVenta" class="control-label"></label>
-                  </div>
-                  <div class="col-12 col-md-9">                                              
-                    <input name="FechaVenta" id ="FechaVenta"  class="form-control" />
-                    <span asp-validation-for="FechaVenta" class="text-danger"></span>
-                  </div>
-              </div>                                            
-              <!--TOTAL  VENTA-->
-              <div class="row form-group">
-                  <div class="col col-md-3">
-                    <label asp-for="Total" class="control-label"></label>
-                  </div>
-                  <div class="col-12 col-md-9">                                              
-                    <input asp-for="Total" class="form-control"  value="0" readonly/>
-                    <span asp-validation-for="Total" class="text-danger"></span>
-                  </div>
-              </div>  
-             <!-- 
-              <div class="form-group">
-                  <label asp-for="IdEstado" class="control-label"></label>
-                  <select asp-for="IdEstado" class ="form-control" asp-items="ViewBag.IdEstado"></select>
-              </div>-->
-              <!-- 
-              <div class="form-group">
-                  <label asp-for="IdMetodo" class="control-label"></label>
-                  <input asp-for="IdMetodo" class="form-control" />
-                  <span asp-validation-for="IdMetodo" class="text-danger"></span>
-              </div>
-              <div class="form-group">
-                  <label asp-for="Nombre" class="control-label"></label>
-                  <input asp-for="Nombre" class="form-control" />
-                  <span asp-validation-for="Nombre" class="text-danger"></span>
-              </div>-->
-              <div class="form-group text-hide">
-                  <label asp-for="NroFactura" class="control-label"></label>
-                  <input asp-for="NroFactura" class="form-control"  type="hidden" value="SN"/>
-                  <span asp-validation-for="NroFactura" class="text-danger"></span>
-              </div>
-              <div class="form-group text-hide">
-                  <label asp-for="ClaveAcceso" class="control-label"></label>
-                  <input asp-for="ClaveAcceso" class="form-control"  type="hidden" value="SN"/>
-                  <span asp-validation-for="ClaveAcceso" class="text-danger"></span>
-              </div>
-
-              <div class="table-responsive">
-                  <table class="table">
-                      <thead>
-                          <tr>
-                              <th>
-                                  CANTIDAD
-                              </th>
-                              <th>
-                                  DESCRIPCION
-                              </th>
-                              <th >
-                                  PRECIO
-                              </th>
-                              <th>
-                                  Total
-                              </th>
-                          </tr>
-                      </thead>
-                      <tbody id="productsToPayList">
-          
-                      </tbody>
-                  </table>
-              </div>
-              <div class="card-footer">
-                  <button id="cobrarButton" type="button"  data-toggle="modal"  class="btn btn-primary btn-sm" data-target="#registrarModal" onclick="ShowModal()" disabled > 
-                      <i class="fa fa-dot-circle-o"></i>  Cobrar
-                  </button>
-                  <button id="registrarButton" type="button"  data-toggle="modal"  class="btn btn-primary btn-sm"  data-target="#resModalNoCob" disabled >
-                      <i class="fa fa-dot-circle-o"></i> Registrar pedido
-                  </button>
-
-                <!--   <button type="reset" class="btn btn-danger btn-sm">
-                      <i class="fa fa-ban"></i> Reset
-                  </button> -->
-              </div>
-
-                <!--   <button type="reset" class="btn btn-danger btn-sm">
-                      <i class="fa fa-ban"></i> Reset
-                  </button> -->
-          </form>
-      </div>
-    </div>                               
-  </div>                            
+                           
 </div>
 <div>
     <a asp-action="Index">Back to List</a>
@@ -310,48 +313,43 @@
 <script src="~/lib/decimal/decimal.js"> </script>
 
 <script>
-/*DECLARACION DE VARIABLES  */
-
-let dVentaList; 
-let dVentaListTosend=[]; //Lista para enviar al Ajax
-let totalValue= new Decimal(0);
-let totalValueOriginal = 0;
-let total = document.getElementById("Total");
-let totalInput = document.getElementById("Total");
-let cambioInput = document.getElementById("Cambio"); 
-let monto = document.getElementById("Monto");
-let urlProuctosByCategoria="@Url.Action("productosByCategoria","Ventums")"; 
-let urlPedidoRegistro = "@Url.Action("InsertVentWithDetails","Ventums")";
-let urlPrintPreticket = "@Url.Action("preTicket","Ventums")";
-
+    /*DECLARACION DE VARIABLES  */
+    let dVentaList; 
+    let dVentaListTosend=[]; //Lista para enviar al Ajax
+    let totalValue= new Decimal(0);
+    let totalValueOriginal = 0;
+    let total = document.getElementById("Total");
+    let totalInput = document.getElementById("Total");
+    let cambioInput = document.getElementById("Cambio"); 
+    let monto = document.getElementById("Monto");
+    let urlProuctosByCategoria="@Url.Action("productosByCategoria","Ventums")"; 
+    let urlPedidoRegistro = "@Url.Action("InsertVentWithDetails","Ventums")";
+    let urlPrintPreticket = "@Url.Action("preTicket","Ventums")";
 
 
 
-function ShowModal() {
-    document.getElementById("totalModal").value = document.getElementById("Total").value;
-}
 
-function calcularCambio() {
-    var cambio = new Decimal(monto.value -totalInput.value) ;
-    if (cambio < 0)
-        cambio =0; 
+    function ShowModal() {
+        document.getElementById("totalModal").value = document.getElementById("Total").value;
+    }
+
+    function calcularCambio() {
+        var cambio = new Decimal(monto.value -totalInput.value) ;
+        if (cambio < 0)
+            cambio =0; 
         
-    document.getElementById("Cambio").setAttribute("value", cambio.toFixed(2)); 
-}
+        document.getElementById("Cambio").setAttribute("value", cambio.toFixed(2)); 
+    }
 
-window.onload = function () {
-    var date = new Date();
+    window.onload = function () {
+        var date = new Date();
 
-    var Mes = String(date.getMonth() + 1).padStart(2, '0');
-    var Dia = String(date.getDate()).padStart(2, '0');
-    var Anio = date.getFullYear();
+        var Mes = String(date.getMonth() + 1).padStart(2, '0');
+        var Dia = String(date.getDate()).padStart(2, '0');
+        var Anio = date.getFullYear();
  
-    document.getElementById("FechaVenta").value = Anio + "-" + Mes + "-" + Dia; 
-};
-
-
-
-
+        document.getElementById("FechaVenta").value = Anio + "-" + Mes + "-" + Dia; 
+    };
 </script>
 <script src="~/js/createVentaAjax.js"> </script>
 <script src="~/js/productosByCategoriaAjax.js"> </script>

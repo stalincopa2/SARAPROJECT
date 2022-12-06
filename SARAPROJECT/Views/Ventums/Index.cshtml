@@ -1,107 +1,142 @@
 ﻿@model IEnumerable<SARAPROJECT.Models.Ventum>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Ventas";
 }
 
-<h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<!-- BREADCRUMB-->
+<section class="au-breadcrumb m-t-75">
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="au-breadcrumb-content">
+                        <div class="au-breadcrumb-left">
+                            <span class="au-breadcrumb-span">You are here:</span>
+                            <ul class="list-unstyled list-inline au-breadcrumb__list">
+                                <li class="list-inline-item active">
+                                    <a href="#">Home</a>
+                                </li>
+                                <li class="list-inline-item seprate">
+                                    <span>/</span>
+                                </li>
+                                <li class="list-inline-item">Dashboard</li>
+                            </ul>
+                        </div>
+                        <button class="au-btn au-btn-icon au-btn--green">
+                            <i class="zmdi zmdi-plus"></i><a asp-action="Create" >Create New</a></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- END BREADCRUMB-->
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.IdMesa)
-            </th>
-            <!--
-            <th>
-                IdMetodo)
-            </th>
+<div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+          <h2 class="title-1 m-b-25">Lista de Ventas</h2>
+          <div class="table-responsive table--no-card m-b-40">
+              <table class="table table-borderless table-striped table-earning">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.IdMesa)
+                            </th>
+                            <!--
+                            <th>
+                                IdMetodo)
+                            </th>
              
-            <th>
-                 model.Nombre)
-            </th>-->
-            <th>
-                @Html.DisplayNameFor(model => model.CodVenta)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaVenta)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Total)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NroFactura)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ClaveAcceso)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NroPedido)
-            </th>
-            <!-- 
-            <th>
-                model.IdEstadoNavigation
-            </th>-->
-            <th>
-                @Html.DisplayNameFor(model => model.IdEstventaNavigation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdUsuarioNavigation)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdMesa)
-            </td>
-            <!--
-            <td>
-               item.IdMetodo)
-            </td>
-            <td>
-              Nombre)
-            </td>-->
-            <td>
-                @Html.DisplayFor(modelItem => item.CodVenta)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaVenta)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Total)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NroFactura)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ClaveAcceso)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NroPedido)
-            </td>
-            <!-- 
-            <td>
-               IdEstadoNavigation.IdEstado
-            </td>-->
-            <td>
-                @Html.DisplayFor(modelItem => item.IdEstventaNavigation.IdEstventa)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdUsuarioNavigation.IdUsuario)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.IdVenta">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdVenta">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdVenta">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                            <th>
+                                 model.Nombre)
+                            </th>-->
+                            <th>
+                                @Html.DisplayNameFor(model => model.CodVenta)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.FechaVenta)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Total)
+                            </th>
+                            <!-- 
+                            <th>
+                                Html.DisplayNameFor(model => model.NroFactura)
+                            </th>
+                            <th>
+                                Html.DisplayNameFor(model => model.ClaveAcceso)
+                            </th>
+                            <th>
+                                Html.DisplayNameFor(model => model.NroPedido)
+                            </th>
+                           
+                            <th>
+                                model.IdEstadoNavigation
+                            </th>-->
+                            <th>
+                                @Html.DisplayNameFor(model => model.IdEstventaNavigation)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.IdUsuarioNavigation)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                @foreach (var item in Model) {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IdMesa)
+                            </td>
+                            <!--
+                            <td>
+                               item.IdMetodo)
+                            </td>
+                            <td>
+                              Nombre)
+                            </td>-->
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CodVenta)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FechaVenta)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Total)
+                            </td>
+                            <!-- 
+                            <td>
+                                Html.DisplayFor(modelItem => item.NroFactura)
+                            </td>
+                            <td>
+                                Html.DisplayFor(modelItem => item.ClaveAcceso)
+                            </td>
+                            <td>
+                                Html.DisplayFor(modelItem => item.NroPedido)
+                            </td> -->
+                            <!-- 
+                            <td>
+                               IdEstadoNavigation.IdEstado
+                            </td>-->
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IdEstventaNavigation.NombreEstadov)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IdUsuarioNavigation.SisUsuario)
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.IdVenta">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@item.IdVenta">Details</a> |
+                                <a asp-action="Delete" asp-route-id="@item.IdVenta">Delete</a>
+                            </td>
+                        </tr>
+                }
+                    </tbody>
+              </table>
+          </div>
+      </div>
+    </div>
+</div>

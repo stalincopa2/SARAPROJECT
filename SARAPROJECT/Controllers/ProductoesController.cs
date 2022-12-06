@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using SARAPROJECT.Filters;
 using SARAPROJECT.Models;
 using SARAPROJECT.Service;
 
@@ -15,14 +17,38 @@ namespace SARAPROJECT.Controllers
     {
         private readonly SARADBContext _context;
         private PictureService pService = new PictureService();
+        private authorizeUser objAuthorizeUser= null;
+
         public ProductoesController(SARADBContext context)
         {
             _context = context;
         }
 
+        /*Metodo adicional para obtener el usuario*/
+        public Usuario returnUsuario()
+        {
+            Usuario objUsuario = new Usuario(); 
+            var str = (HttpContext.Session.GetString("Usuario"));
+            objUsuario = JsonConvert.DeserializeObject<Usuario>(str);
+            return objUsuario; 
+        }
+
+
         // GET: Productoes
         public async Task<IActionResult> Index()
         {
+            if (string.IsNullOrWhiteSpace(HttpContext.Session.GetString("Usuario")))
+            {
+                return RedirectToAction("Login", "Acceso");
+            }
+           
+            objAuthorizeUser = new authorizeUser(_context);
+
+            if (objAuthorizeUser.OnAuthorization(1, returnUsuario()) == false)
+            {
+                return NotFound();
+            }
+
             var sARADBContext = _context.Productos.Include(p => p.IdCategoriaNavigation);
             ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
             return View(await sARADBContext.ToListAsync());

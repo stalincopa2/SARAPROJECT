@@ -6,3 +6,16 @@
 .inputHide{
     display: none;
 }
+
+.ventaDetalle {
+    font-size: 11px;
+}
+
+    .ventaDetalle input{
+        width: 125px;
+        height: 35px;
+    }
+    .ventaDetalle select {
+        width: 125px;
+        height: 35px;
+    }

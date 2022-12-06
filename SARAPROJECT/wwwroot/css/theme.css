@@ -3259,8 +3259,8 @@ section {
     -webkit-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
     -moz-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
     box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
-    padding: 40px;
-    padding-right: 35px;
+    padding: 0px;
+    padding-right: 0px;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
@@ -3308,9 +3308,9 @@ section {
 }
 
 .au-card-top-countries {
-    padding: 40px;
-    padding-top: 25px;
-    padding-bottom: 29px;
+    padding: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
 }
 
 .au-card--no-shadow {
@@ -4279,7 +4279,7 @@ section {
 
 .table-top-countries tbody td {
     white-space: nowrap;
-    font-size: 14px;
+    font-size: 11px;
     color: #fff;
     padding: 14px 5px;
     border-top: none;

@@ -23,6 +23,10 @@ function AsignarValoresToSend(cobrado) {
             IdMetodo: 1,
             Monto: document.getElementById("Monto").value
         }
+        if (DetPagos.Monto == totalInput.value) {
+            DetPago.IdMetodo = 2;
+        }
+
         DetPagos.push(DetPago);
         oVandD.DetPagos = DetPagos
     } 
@@ -63,7 +67,7 @@ function productsToList(x) {
 
         precioUnitario = new Decimal(dVentaListTosend[posicionActual].precio);
 
-        productsToPayList += " <tr><td> <input onkeyup=\"modifyCant(this)\" onchange=\"modifyCant(this)\" type=\"number\" id=\"itemList" + dVentaListTosend[posicionActual].idProducto + "\" value = \"" + dVentaListTosend[posicionActual].cantidad + "\" style =\"width:100px;\" /></td>" +
+        productsToPayList += " <tr style=\"font-size: 12px;\" ><td> <input onkeyup=\"modifyCant(this)\" onchange=\"modifyCant(this)\" type=\"number\" id=\"itemList" + dVentaListTosend[posicionActual].idProducto + "\" value = \"" + dVentaListTosend[posicionActual].cantidad + "\" style =\"width:30px;\" /></td>" +
             "<td>" + dVentaListTosend[posicionActual].nombreProducto + "</td>" +
             "<td>" + dVentaListTosend[posicionActual].precio + "</td>" +
             "<td id=\"totaldv" + dVentaListTosend[posicionActual].idProducto + "\">" + precioUnitario.mul(dVentaListTosend[posicionActual].cantidad) + "</td>" +
@@ -126,7 +130,9 @@ function findProductoById(idProducto) {
 }
 
 function modifyCant(elemento) {
-
+    if (elemento.value == "" || elemento.value<0) {
+        elemento.value = 1; 
+    }
     var idInput = elemento.id;
     var idPr = idInput.substring(8, (idInput.length)); /*itemList- */
     var positionInList = findProductoById(idPr);
