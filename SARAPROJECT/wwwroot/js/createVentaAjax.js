@@ -1,6 +1,10 @@
 ﻿/*Funcion para asignar valores definitivos a enviar */
 function AsignarValoresToSend(cobrado) {
-   // var mont = document.getElementById("Monto").value.toString().replace(".", ",");
+    //var mont = document.getElementById("Monto").value.toString().replace(".", ",");
+    var Total = new Decimal(document.getElementById("Total").value); 
+    var Cambio = new Decimal(document.getElementById("Monto").value); 
+    console.log(Total);
+    console.log(Cambio); 
 
     var oVandD = {
 
@@ -10,7 +14,7 @@ function AsignarValoresToSend(cobrado) {
         IdEstventa: document.getElementById("IdEstventa").value,
         CodVenta: document.getElementById("CodVenta").value,
         FechaVenta: document.getElementById("FechaVenta").value,
-        Total: document.getElementById("Total").value,
+        Total: Total,
         NroFactura: "SN",
         ClaveAcceso: "SN",
         DetalleVenta: dVentaListTosend
@@ -21,10 +25,10 @@ function AsignarValoresToSend(cobrado) {
         var DetPago = {
             IdVenta: 0,
             IdMetodo: 1,
-            Monto: document.getElementById("Monto").value
+            Monto: Cambio
         }
-        if (DetPagos.Monto == totalInput.value) {
-            DetPago.IdMetodo = 2;
+        if (Total.eq(Cambio)) {
+            oVandD.IdEstventa = 2;
         }
 
         DetPagos.push(DetPago);
@@ -78,10 +82,8 @@ function productsToList(x) {
         totalInput.setAttribute("value", totalValueOriginal.add(precioUnitario.mul(dVentaListTosend[posicionActual].cantidad)));
     }
 
-
-
     if (totalInput.value == 0) {
-        document.getElementById("cobrarButton").removeAttribute("enabled", "");
+        document.getElementById("registrarButton").removeAttribute("enabled", "");
         document.getElementById("cobrarButton").setAttribute("disabled", "");
     } else {
         document.getElementById("cobrarButton").setAttribute("enabled", "");

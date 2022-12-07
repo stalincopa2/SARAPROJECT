@@ -16,19 +16,16 @@ $(document).ready(function () {
                 document.getElementById("bodyModalCob").innerHTML = "<div class=\"alert alert-success\" role=\"alert\">" +
                     "Venta cobrada con éxito </div>";
                 /*Footer del modal*/
-                document.getElementById("footerModalCob").innerHTML = "<button class=\"btn btn - primary\" types=\"button\">" +
+                document.getElementById("footerModalCob").innerHTML = "<button class=\"btn btn - primary\" types=\"button\" onclick=\"location.reload()\">" +
                     "Nueva Venta" +
                     "</button>" +
                     "<form method=\"POST\" action=\"" + urlPrintPreticket + "\" >"+
-
                     "<input type =\"hidden\" name=\"idVenta\" value=\"" + data.respuesta + "\">" +
                     "<button class=\"btn btn - primary\" type=\"submit\" >" +
                     "Imprimir" +
                     "</button> </form>";
             //IMPRIMIR
-            }
-
-      
+            }     
         })
     });
 });

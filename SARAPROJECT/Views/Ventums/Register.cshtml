@@ -1,7 +1,7 @@
 ﻿@model SARAPROJECT.Models.Ventum
 
 @{
-    ViewData["Title"] = "NUEVA VENTA";
+    ViewData["Title"] = "REGISTRAR VENTA";
 }
 
 
@@ -212,10 +212,7 @@ END BREADCRUMB-->
                               </table>
                       
                           <div class="card-footer">
-                              <button id="cobrarButton" type="button"  data-toggle="modal"  class="btn btn-primary btn-sm" data-target="#registrarModal" onclick="ShowModal()" disabled > 
-                                  <i class="fa fa-dot-circle-o"></i>  Cobrar
-                              </button>
-                              <button id="registrarButton" type="button"  data-toggle="modal"  class="btn btn-primary btn-sm"  data-target="#resModalNoCob" disabled >
+                              <button id="registrarButton" type="button"  data-toggle="modal"  class="btn btn-primary btn-sm" onclick="ShowModal()"  data-target="#resModalNoCob" disabled >
                                   <i class="fa fa-dot-circle-o"></i> Registrar pedido
                               </button>
 
@@ -234,75 +231,11 @@ END BREADCRUMB-->
 </div>
 
 <div class="row">
-
-<div class="modal" tabindex="-1" id="registrarModal" data-backdrop="static">
-  <div class="modal-dialog">
-      <div class="modal-content"> 
-          <div class="modal-header">
-              Ingresa el monto 
-              <br>
-          </div>
-
-          <div class="modal-body"  id="bodyModalCob" >
-              <div class="container">
-                  <div class="row">
-                      <form name="formModal">
-                          <div class="row form-group">
-                              <div class="col col-md-3">
-                                  <label name="IdPago" class="form-control-label">Met. Pago</label>
-                              </div>
-                              <div class="col-12 col-md-9">
-                                  <select name="IdPago" class ="form-control" asp-items="@ViewBag.Metodo"></select>
-                              </div>
-                          </div>
-                          <div class="row form-group">
-                              <div class="col col-md-3">
-                                  <label class="form-control-label">Total</label>
-                              </div>
-                              <div class="col-12 col-md-9">
-                                   <input type="text" id="totalModal" class="form-control" />
-                              </div>
-                          </div>
-
-                          <div class="row form-group">
-                              <div class="col col-md-3">
-                                  <label class="form-control-label">Monto</label>
-                              </div>
-                              <div class="col-12 col-md-9">
-                                   <input type="number" id="Monto" value="0"  onkeyup="calcularCambio()" class="form-control" />
-                              </div>
-                          </div> 
-
-                          <div class="row form-group">
-                              <div class="col col-md-3">
-                                  <label class="form-control-label">Cambio</label>
-                              </div>
-                              <div class="col-12 col-md-9">
-                                   <input  type="number" id="Cambio" class="form-control" readonly/>
-                              </div>
-                          </div>                          
-                      </form>
-                  </div>        
-              </div>
-          </div>
-
-          <div class="modal-footer" id="footerModalCob">
-               <button class="btnEnviar btn btn-primary" types="button">
-                   Aceptar
-               </button>
-               <button class="btn btn-danger" data-dismiss="modal">
-                   cancelar
-               </button>             
-          </div>
-      </div>
-  </div>
-</div>
-
 <div class="modal" tabindex="-1" id="resModalNoCob" data-backdrop="static">
   <div class="modal-dialog">
       <div class="modal-content">
           <div class="modal-header">
-              Ingresa el monto 
+              ¿Registrar la venta?
               <br>
           </div>
 
@@ -350,9 +283,6 @@ END BREADCRUMB-->
     let urlPedidoRegistro = "@Url.Action("InsertVentWithDetails","Ventums")";
     let urlPrintPreticket = "@Url.Action("preTicket","Ventums")";
 
-
-
-
     function ShowModal() {
         document.getElementById("totalModal").value = document.getElementById("Total").value;
     }
@@ -375,10 +305,9 @@ END BREADCRUMB-->
         document.getElementById("FechaVenta").value = Anio + "-" + Mes + "-" + Dia; 
     };
 </script>
-<script src="~/js/createVentaAjax.js"> </script>
-<script src="~/js/productosByCategoriaAjax.js"> </script>
-<script src="~/js/vRegistroAjaxCobrado.js"> </script>
+
 <script src="~/js/vRegistroAjaxNoCobrado.js"> </script>
+<script src="~/js/productosByCategoriaAjax.js"> </script>
 <script src="~/js/slide.js"></script>
 
 @section Scripts {

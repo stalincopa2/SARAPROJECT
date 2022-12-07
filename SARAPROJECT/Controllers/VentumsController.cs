@@ -107,6 +107,37 @@ namespace SARAPROJECT.Controllers
             return Json(productosByCategoria);
         }
 
+        // GET: Ventums/Register
+        public IActionResult Register()
+        {
+            if (string.IsNullOrWhiteSpace(HttpContext.Session.GetString("Usuario")))
+            {
+                return RedirectToAction("Login", "Acceso");
+            }
+            var str = (HttpContext.Session.GetString("Usuario"));
+            var objUsuario = JsonConvert.DeserializeObject<Usuario>(str);
+            ViewBag.Usuario = objUsuario.NombreUsuario;
+            ViewBag.IdUsuario = objUsuario.IdUsuario;
+
+
+            // ViewData["IdEstado"] = new SelectList(_context.Estados, "IdEstado", "IdEstado");
+            //ViewData["IdUsuario"] = new SelectList(_context.Usuarios, "IdUsuario", "NombreUsuario");
+            Guid g = Guid.NewGuid();
+
+            /*ViewBags*/
+            ViewBag.CodVenta = g.ToString().Substring(0, 9);
+            ViewBag.listCategorias = _context.Categoria.ToList();
+            ViewBag.NroPedidoValue = _context.Venta.Count() + 1;
+            /*ViewData*/
+            ViewBag.Metodo = new SelectList(_context.MetodoPagos, "IdMetodo", "Nombre");
+            ViewData["IdEstventa"] = new SelectList(_context.EstadoVenta, "IdEstventa", "NombreEstadov");
+            ViewData["IdMesa"] = new SelectList(_context.Mesas, "IdMesa", "NombreMesa");
+
+            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
+            return View();
+        }
+
+
         // GET: Ventums/Create
         public IActionResult Create()
         {
@@ -137,6 +168,7 @@ namespace SARAPROJECT.Controllers
             return View();
         }
 
+        /*
         // POST: Ventums/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -162,6 +194,7 @@ namespace SARAPROJECT.Controllers
             ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
             return View(ventum);
         }
+        */
 
         // GET: Ventums/Edit/5
         public async Task<IActionResult> Edit(int? id)
