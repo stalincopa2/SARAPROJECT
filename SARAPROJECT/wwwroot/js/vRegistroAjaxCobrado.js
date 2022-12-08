@@ -19,7 +19,7 @@ $(document).ready(function () {
                 document.getElementById("footerModalCob").innerHTML = "<button class=\"btn btn - primary\" types=\"button\" onclick=\"location.reload()\">" +
                     "Nueva Venta" +
                     "</button>" +
-                    "<form method=\"POST\" action=\"" + urlPrintPreticket + "\" >"+
+                    "<form method=\"GET\" action=\"" + urlPrintPreticket + "\" >"+
                     "<input type =\"hidden\" name=\"idVenta\" value=\"" + data.respuesta + "\">" +
                     "<button class=\"btn btn - primary\" type=\"submit\" >" +
                     "Imprimir" +

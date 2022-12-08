@@ -18,6 +18,20 @@ namespace SARAPROJECT.Controllers
             _context = context;
         }
 
+        [HttpPost]
+        public async Task<IActionResult> InsertPagoAjax([FromBody] DetPago oDetPago)
+        {
+            _context.Add(oDetPago);
+            await _context.SaveChangesAsync();
+            
+            Ventum oVenta = _context.Venta.Find(oDetPago.IdVenta);
+            oVenta.IdEstventa = 2;
+            _context.Update(oVenta);
+            await _context.SaveChangesAsync();
+            
+
+            return Json(new { respuesta = oDetPago.IdVenta});
+        }
         // GET: DetPagoes
         public async Task<IActionResult> Index()
         {

@@ -2,7 +2,7 @@
 function AsignarValoresToSend(cobrado) {
     //var mont = document.getElementById("Monto").value.toString().replace(".", ",");
     var Total = new Decimal(document.getElementById("Total").value); 
-    var Cambio = new Decimal(document.getElementById("Monto").value); 
+    var vMonto = new Decimal(document.getElementById("Monto").value); 
     console.log(Total);
     console.log(Cambio); 
 
@@ -25,9 +25,9 @@ function AsignarValoresToSend(cobrado) {
         var DetPago = {
             IdVenta: 0,
             IdMetodo: 1,
-            Monto: Cambio
+            Monto: vMonto
         }
-        if (Total.eq(Cambio)) {
+        if (vMonto.greaterThanOrEqualTo(Total.toNumber())) {
             oVandD.IdEstventa = 2;
         }
 
@@ -83,7 +83,7 @@ function productsToList(x) {
     }
 
     if (totalInput.value == 0) {
-        document.getElementById("registrarButton").removeAttribute("enabled", "");
+        document.getElementById("cobrarButton").removeAttribute("enabled", "");
         document.getElementById("cobrarButton").setAttribute("disabled", "");
     } else {
         document.getElementById("cobrarButton").setAttribute("enabled", "");

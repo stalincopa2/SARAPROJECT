@@ -16,13 +16,13 @@ namespace SARAPROJECT.Filters
             _context = context;
         }
 
-        public bool OnAuthorization(int idOPeracion , Usuario oUser)
+        public bool OnAuthorization(int idOPeracion , int idRol)
         {
             String nombreOperacion = "";
             String nomberModulo = "";
 
             var listOperaciones = from m in _context.RolOperacions
-                                  where m.IdRol == oUser.IdRol
+                                  where m.IdRol == idRol
                                         && m.IdOperacion == idOPeracion
                                   select m;
 

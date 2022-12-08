@@ -37,14 +37,16 @@ namespace SARAPROJECT.Controllers
         // GET: Productoes
         public async Task<IActionResult> Index()
         {
+            Usuario objUsuario = new Usuario(); 
             if (string.IsNullOrWhiteSpace(HttpContext.Session.GetString("Usuario")))
             {
                 return RedirectToAction("Login", "Acceso");
             }
-           
+
+            objUsuario = returnUsuario(); 
             objAuthorizeUser = new authorizeUser(_context);
 
-            if (objAuthorizeUser.OnAuthorization(1, returnUsuario()) == false)
+            if (objAuthorizeUser.OnAuthorization(1, objUsuario.IdRol) == false)
             {
                 return NotFound();
             }

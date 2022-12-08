@@ -1,9 +1,19 @@
 ﻿@model IEnumerable<SARAPROJECT.Models.Ventum>
-
+@using SARAPROJECT.Models;
 @{
     ViewData["Title"] = "Ventas";
 }
+@{
 
+    var pagina = new PAGINA();
+
+    int pageNo = 0;
+    if (ViewBag.pagina != null)
+    {
+        pagina = ViewBag.pagina;
+        pageNo = pagina.CurrentPage;
+    }
+}
 
 <!-- BREADCRUMB-->
 <section class="au-breadcrumb m-t-75">
@@ -34,7 +44,48 @@
 </section>
 <!-- END BREADCRUMB-->
 
+
 <div class="container-fluid">
+    <div class="container" style="padding:20px;">
+        <div class="row">
+            <div class="col-md-12">
+                @if (pagina.TotalPages > 0)
+                {
+                    <ul class="pagination justify-content-end">
+                        @if (pagina.CurrentPage > 1)
+                        {
+                            <li class="page-item">
+                                @Html.ActionLink("Fisrt", "Index", "Ventums", new {  pg = 1 }, new { @class = "page-link" })
+                            </li>
+                            <li>
+                                @Html.ActionLink("Previous", "Index", "Ventums", new {pg = pagina.CurrentPage + 1 }, new { @class = "page-link" })
+                            </li>
+
+                        }
+                        @for (int pge = pagina.StartPage; pge <= pagina.TotalPages; pge++)
+                        {
+
+                            <li class="page-item" @(pge == pagina.CurrentPage ? "active" : "")>
+                                @Html.ActionLink(@pge.ToString(), "Index", "Ventums", new { pg = @pge }, new { @class = "page-link" })
+                            </li>
+                        }
+
+                        @if (pagina.CurrentPage < pagina.TotalPages)
+                        {
+                            <li class="page-item">
+                                @Html.ActionLink("Next", "Index", "Ventums", new {pg = pagina.CurrentPage + 1 }, new { @class = "page-link" })
+                            </li>
+                            <li class="page-item">
+                                @Html.ActionLink("Last", "Index", "Ventums", new { pg = pagina.TotalPages }, new { @class = "page-link" })
+                            </li>
+                        }
+                    </ul>
+
+                }
+            </div>
+        </div>
+    </div>
+
     <div class="row">
       <div class="col-12">
           <h2 class="title-1 m-b-25">Lista de Ventas</h2>
@@ -45,14 +96,6 @@
                             <th>
                                 @Html.DisplayNameFor(model => model.IdMesa)
                             </th>
-                            <!--
-                            <th>
-                                IdMetodo)
-                            </th>
-             
-                            <th>
-                                 model.Nombre)
-                            </th>-->
                             <th>
                                 @Html.DisplayNameFor(model => model.CodVenta)
                             </th>
@@ -62,20 +105,6 @@
                             <th>
                                 @Html.DisplayNameFor(model => model.Total)
                             </th>
-                            <!-- 
-                            <th>
-                                Html.DisplayNameFor(model => model.NroFactura)
-                            </th>
-                            <th>
-                                Html.DisplayNameFor(model => model.ClaveAcceso)
-                            </th>
-                            <th>
-                                Html.DisplayNameFor(model => model.NroPedido)
-                            </th>
-                           
-                            <th>
-                                model.IdEstadoNavigation
-                            </th>-->
                             <th>
                                 @Html.DisplayNameFor(model => model.IdEstventaNavigation)
                             </th>
@@ -88,39 +117,19 @@
                     <tbody>
                 @foreach (var item in Model) {
                         <tr>
-                            <td>
+                            
+                            <td >
                                 @Html.DisplayFor(modelItem => item.IdMesa)
                             </td>
-                            <!--
-                            <td>
-                               item.IdMetodo)
-                            </td>
-                            <td>
-                              Nombre)
-                            </td>-->
-                            <td>
+                            <td >
                                 @Html.DisplayFor(modelItem => item.CodVenta)
                             </td>
-                            <td>
+                            <td >
                                 @Html.DisplayFor(modelItem => item.FechaVenta)
                             </td>
-                            <td>
+                            <td >
                                 @Html.DisplayFor(modelItem => item.Total)
                             </td>
-                            <!-- 
-                            <td>
-                                Html.DisplayFor(modelItem => item.NroFactura)
-                            </td>
-                            <td>
-                                Html.DisplayFor(modelItem => item.ClaveAcceso)
-                            </td>
-                            <td>
-                                Html.DisplayFor(modelItem => item.NroPedido)
-                            </td> -->
-                            <!-- 
-                            <td>
-                               IdEstadoNavigation.IdEstado
-                            </td>-->
                             <td>
                                 @Html.DisplayFor(modelItem => item.IdEstventaNavigation.NombreEstadov)
                             </td>
@@ -128,9 +137,25 @@
                                 @Html.DisplayFor(modelItem => item.IdUsuarioNavigation.SisUsuario)
                             </td>
                             <td>
-                                <a asp-action="Edit" asp-route-id="@item.IdVenta">Edit</a> |
-                                <a asp-action="Details" asp-route-id="@item.IdVenta">Details</a> |
-                                <a asp-action="Delete" asp-route-id="@item.IdVenta">Delete</a>
+                                <!--  <a asp-action="Cobrar" asp-route-id="item.IdVenta">Edit</a> |
+                                |
+                                <a asp-action="Delete" asp-route-id="item.IdVenta">Delete</a> -->
+                                    @{
+                                        var IdVenta ="IdVenta"+item.IdVenta;
+                                        var Total = "Total" + item.IdVenta;
+                                        String inabilitado = "disabled";
+
+                                        if (item.IdEstventa == 1)
+                                        {
+                                            inabilitado = ""; 
+                                        }
+                                    }
+                                    <input type="hidden" id="@Total" value="@item.Total"/>
+                                    
+                                    <button @inabilitado id="cobrarButton" type="button" value="@item.IdVenta" data-toggle="modal"  class="btnCobrar btn-primary btn-sm"> 
+                                        <i class="fa fa-dot-circle-o"></i>  Cobrar
+                                    </button>
+                                    <a asp-action="Details" asp-route-id="@item.IdVenta">Details</a>
                             </td>
                         </tr>
                 }
@@ -140,3 +165,145 @@
       </div>
     </div>
 </div>
+
+<!--Modal para cobar-->
+<div class="row">
+    <div class="modal" tabindex="-1" id="registrarModal" data-backdrop="static">
+      <div class="modal-dialog">
+          <div class="modal-content"> 
+              <div class="modal-header">
+                  Ingresa el monto 
+                  <br>
+              </div>
+
+              <div class="modal-body"  id="bodyModalCob" >
+                  <div class="container">
+                      <div class="row">
+                          <form name="formModal">
+                              <input type="hidden" id="IdVenta" />
+                              <div class="row form-group">
+                                  <div class="col col-md-3">
+                                      <label name="IdPago" class="form-control-label">Met. Pago</label>
+                                  </div>
+                                  <div class="col-12 col-md-9">
+                                      <select name="IdMetodo" id="IdMetodo"class ="form-control" asp-items="@ViewBag.Metodo"></select>
+                                  </div>
+                              </div>
+                              <div class="row form-group">
+                                  <div class="col col-md-3">
+                                      <label class="form-control-label">Total</label>
+                                  </div>
+                                  <div class="col-12 col-md-9">
+                                       <input type="text" id="totalModal" class="form-control" />
+                                  </div>
+                              </div>
+
+                              <div class="row form-group">
+                                  <div class="col col-md-3">
+                                      <label class="form-control-label">Monto</label>
+                                  </div>
+                                  <div class="col-12 col-md-9">
+                                       <input type="number" id="Monto" value="0"  onkeyup="calcularCambio()" class="form-control" />
+                                  </div>
+                              </div> 
+
+                              <div class="row form-group">
+                                  <div class="col col-md-3">
+                                      <label class="form-control-label">Cambio</label>
+                                  </div>
+                                  <div class="col-12 col-md-9">
+                                       <input  type="number" id="Cambio" class="form-control" readonly/>
+                                  </div>
+                              </div>                          
+                          </form>
+                      </div>        
+                  </div>
+              </div>
+
+              <div class="modal-footer" id="footerModalCob">
+                   <button class="btnEnviar btn btn-primary" types="button">
+                       Aceptar
+                   </button>
+                   <button class="btn btn-danger" data-dismiss="modal">
+                       cancelar
+                   </button>             
+              </div>
+          </div>
+      </div>
+    </div>                           
+</div>
+
+<script src="~/vendor/jquery-3.2.1.min.js"></script>
+<script src="~/lib/decimal/decimal.js"> </script>
+<script>
+    let urlPedidoRegistro =  "@Url.Action("InsertPagoAjax","DetPagoes")";
+    let urlPrintPreticket = "@Url.Action("preTicket","Ventums")";
+    function reportGenerate() {
+        document.formulario2.submit();
+    }
+
+    function calcularCambio() {
+        var totalInput = document.getElementById("totalModal").value;
+
+        var Total = new Decimal(totalInput.replace(",","."));
+        var Monto = new Decimal(document.getElementById("Monto").value); 
+        var cambio = Monto.sub(Total);
+
+        if (cambio< 0)
+            cambio =0; 
+        document.getElementById("Cambio").setAttribute("value", cambio); 
+    }
+
+    $(document).ready(function () {
+        $(document).on('click', '.btnCobrar ', function () {
+            var id = $(this).val();
+            var Total = document.getElementById("Total"+ id).value;
+            document.getElementById("IdVenta").setAttribute("value", id); 
+            document.getElementById("totalModal").setAttribute("value", Total);
+             $('#registrarModal').modal('show');
+        })
+    })
+
+    /*AJAX ENVIAR COMPRA CON DETALLE cobrando*/
+$(document).ready(function () {
+    $(document).on('click', '.btnEnviar', function (e) {
+        e.preventDefault();
+
+        var MontoValue = new Decimal(document.getElementById("Monto").value); 
+
+        var oDetPago = {
+            IdVenta:  document.getElementById("IdVenta").value,
+            IdMetodo: document.getElementById("IdMetodo").value,
+            Monto: MontoValue.toNumber()
+        };
+
+        $.ajax({ // cabecera de mi metodo ajax
+            url: urlPedidoRegistro,
+            type: "POST",
+            data: JSON.stringify(oDetPago),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+        }).done(function (data) {
+            if (data.respuesta > 0) {
+                /*Body del modal*/
+                document.getElementById("bodyModalCob").innerHTML = "<div class=\"alert alert-success\" role=\"alert\">" +
+                    "Venta cobrada con éxito </div>";
+                /*Footer del modal*/
+                document.getElementById("footerModalCob").innerHTML = "<button class=\"btn btn - primary\" types=\"button\" onclick=\"location.reload()\">" +
+                    "Nueva Venta" +
+                    "</button>" +
+                    "<form method=\"POST\" action=\"" + urlPrintPreticket + "\" >"+
+                    "<input type =\"hidden\" name=\"idVenta\" value=\"" + data.respuesta + "\">" +
+                    "<button class=\"btn btn - primary\" type=\"submit\" >" +
+                    "Imprimir" +
+                    "</button> </form>";
+            //IMPRIMIR
+            }     
+        })
+    });
+});
+
+
+
+</script>
+

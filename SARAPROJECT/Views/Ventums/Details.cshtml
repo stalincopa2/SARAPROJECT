@@ -2,13 +2,23 @@
 
 @{
     ViewData["Title"] = "Details";
+    Decimal Total = 0;
 }
 
-<h1>Details</h1>
+                   
+
 
 <div>
-    <h4>Ventum</h4>
+    <h4>Venta</h4>
     <hr />
+    
+    <form method="GET" action="@Url.Action("preTicket","Ventums")" style="margin-top:50px;">
+    <input type ="hidden" name="idVenta" value="@Model.IdVenta">
+    <button class="btn btn - primary" type="submit" >
+    Imprimir 
+    </button> 
+    </form> 
+    <br />
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.IdMesa)
@@ -76,16 +86,97 @@
             @Html.DisplayNameFor(model => model.IdEstventaNavigation)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdEstventaNavigation.IdEstventa)
+            @Html.DisplayFor(model => model.IdEstventaNavigation.NombreEstadov)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.IdUsuarioNavigation)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdUsuarioNavigation.IdUsuario)
+            @Html.DisplayFor(model => model.IdUsuarioNavigation.SisUsuario)
         </dd>
     </dl>
 </div>
+
+<table>
+    <thead>
+        <tr>
+            <th colspan="2">
+                Cant
+            </th>
+            <th colspan="3">
+                Descripción
+            </th>
+            <td colspan="2">
+
+            </td>
+            <th>
+                P.U
+            </th>
+            <td></td>
+            <th>
+                Total
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.DetalleVenta) {
+                <tr>
+                    @{
+                        var precio = item.Precio;
+                        var cantidad = item.Cantidad;
+                        var totalU = precio * cantidad;
+                    }
+           <td >@cantidad</td> 
+           <td></td>
+           <td>@Html.DisplayFor(itemModel =>item.IdProductoNavigation.NombreProducto)</td>
+           <td></td>
+           <td></td>
+            <td></td>
+           <td>@precio</td>
+           <td colspan="2"></td>
+           <td>@totalU</td>
+        </tr>
+}
+    </tbody>
+</table>
+<p>Subtotal:@Html.DisplayFor(model=>model.Total)</p>
+<p>Subtotal 0%:@Html.DisplayFor(model=>model.Total)</p>
+<p>Total:@Html.DisplayFor(model=>model.Total)</p>
+<table>
+    <thead>
+        <tr>
+            <th>
+                Metodo de pago
+            </th>
+            <th>
+                Monto
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        
+        @foreach (var item in Model.DetPagos) 
+        {
+            Total += item.Monto; 
+         <tr>
+           <td>@Html.DisplayFor(itemModel =>item.IdMetodoNavigation.Nombre)</td>
+           <td>@Html.DisplayFor(itemModel =>item.Monto)</td>
+         </tr>
+        }
+        <tr>
+            @{
+                var cambio= Total - Model.Total;
+                if (cambio < 0)
+                {
+                    cambio = 0; 
+                }
+            }
+           <td> Cambio: @cambio</td>
+        </tr>
+    </tbody>
+</table>
+
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.IdVenta">Edit</a> |
     <a asp-action="Index">Back to List</a>

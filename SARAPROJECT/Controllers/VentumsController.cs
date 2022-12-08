@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using SARAPROJECT.Filters;
+using SARAPROJECT.Helpers;
 using SARAPROJECT.Models;
 using SARAPROJECT.Service;
 
@@ -15,14 +17,25 @@ namespace SARAPROJECT.Controllers
     public class VentumsController : Controller
     {
         private readonly SARADBContext _context;
+        private authorizeUser objAuthorizeUser = null;
 
         public VentumsController(SARADBContext context)
         {
             _context = context;
         }
 
+        /*Metodo adicional para obtener el usuario*/
+        public Usuario returnUsuario()
+        {
+            Usuario objUsuario = new Usuario();
+            var str = (HttpContext.Session.GetString("Usuario"));
+            objUsuario = JsonConvert.DeserializeObject<Usuario>(str);
+            return objUsuario;
+        }
+
         // GET: Ventums
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public async Task<IActionResult> Index(int pg = 1)
         {
             if (string.IsNullOrWhiteSpace(HttpContext.Session.GetString("Usuario")))
             {
@@ -30,15 +43,24 @@ namespace SARAPROJECT.Controllers
             }
             var str = (HttpContext.Session.GetString("Usuario"));
             var objUsuario = JsonConvert.DeserializeObject<Usuario>(str);
+
+
+            ViewBag.Metodo = new SelectList(_context.MetodoPagos, "IdMetodo", "Nombre");
             ViewBag.Usuario = objUsuario.NombreUsuario;
             ViewBag.IdUsuario = objUsuario.IdUsuario;
             ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
 
-            var sARADBContext = _context.Venta.Include(v => v.IdEstventaNavigation).Include(v => v.IdUsuarioNavigation);
+            //var sARADBContext = _context.Venta.Include(v => v.IdEstventaNavigation).Include(v => v.IdUsuarioNavigation);
 
-            // var sARADBContext = _context.Venta.Include(v => v.IdEstadoNavigation).Include(v => v.IdEstventaNavigation).Include(v => v.IdUsuarioNavigation);
+            const int pageSize = 10;
+            if (pg < 1)
+                pg = 1;
 
-            return View(await sARADBContext.ToListAsync());
+            var pagina = new PAGINA(_context.Venta.Count(), pg, pageSize);
+            ViewBag.pagina = pagina;
+            var data = _context.Venta.Skip((pg - 1) * pageSize).Take(pagina.PageSize).Include(v => v.IdEstventaNavigation).Include(v => v.IdUsuarioNavigation).OrderBy(v => v.IdVenta);
+
+            return View(await data.ToListAsync());
         }
 
         // GET: Ventums/Details/5
@@ -50,7 +72,7 @@ namespace SARAPROJECT.Controllers
             }
 
             var ventum = await _context.Venta
-               // .Include(v => v.IdEstadoNavigation)
+                // .Include(v => v.IdEstadoNavigation)
                 .Include(v => v.IdEstventaNavigation)
                 .Include(v => v.IdUsuarioNavigation)
                 .FirstOrDefaultAsync(m => m.IdVenta == id);
@@ -58,6 +80,8 @@ namespace SARAPROJECT.Controllers
             {
                 return NotFound();
             }
+            ventum.DetalleVenta = _context.DetalleVenta.Where(dv => dv.IdVenta == ventum.IdVenta).Include(dv => dv.IdProductoNavigation).ToArray();
+            ventum.DetPagos = _context.DetPagos.Where(dp => dp.IdVenta == ventum.IdVenta).Include(dp=>dp.IdMetodoNavigation).ToArray(); 
             ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
             return View(ventum);
         }
@@ -77,18 +101,23 @@ namespace SARAPROJECT.Controllers
 
 
         //POST VETUM/preTicket
-        [HttpPost]
-        public IActionResult preTicket(int idVenta)
+        [HttpGet]
+        public async Task<IActionResult> preTicket(int idVenta)
         {
-            calcularTotal ct = new calcularTotal();
-            var ventum = _context.Venta.Find(idVenta);
 
-            ventum.DetalleVenta = _context.DetalleVenta.Where(dv => dv.IdVenta == ventum.IdVenta).Include(dv=>dv.IdProductoNavigation).ToArray();
-            List<DetPago> dtList =  _context.DetPagos.Where(dv => dv.IdVenta == idVenta).ToList();
-            decimal efectivo = ct.retornarTotal(dtList);
+            var ventum =  await _context.Venta
+                // .Include(v => v.IdEstadoNavigation)
+                .Include(v => v.IdEstventaNavigation)
+                .Include(v => v.IdUsuarioNavigation)
+                .FirstOrDefaultAsync(m => m.IdVenta == idVenta);
 
-            ViewBag.Cambio = ct.calcularCambio(ventum.Total, efectivo); 
-            ViewBag.Efectivo = efectivo;
+            if (ventum == null)
+            {
+                return NotFound();
+            }
+
+            ventum.DetalleVenta = _context.DetalleVenta.Where(dv => dv.IdVenta == ventum.IdVenta).Include(dv => dv.IdProductoNavigation).ToArray();
+            ventum.DetPagos = _context.DetPagos.Where(dp => dp.IdVenta == ventum.IdVenta).Include(dp => dp.IdMetodoNavigation).ToArray();
             ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
 
             return View(ventum);
@@ -141,13 +170,20 @@ namespace SARAPROJECT.Controllers
         // GET: Ventums/Create
         public IActionResult Create()
         {
+            Usuario objUsuario = new Usuario();
             if (string.IsNullOrWhiteSpace(HttpContext.Session.GetString("Usuario")))
             {
                 return RedirectToAction("Login", "Acceso");
             }
-            var str = (HttpContext.Session.GetString("Usuario"));
-            var objUsuario = JsonConvert.DeserializeObject<Usuario>(str);
-            ViewBag.Usuario = objUsuario.NombreUsuario;
+
+            objUsuario = returnUsuario();
+            objAuthorizeUser = new authorizeUser(_context);
+
+            if (objAuthorizeUser.OnAuthorization(1, objUsuario.IdRol) == false)
+            {
+                return NotFound();
+            }
+
             ViewBag.IdUsuario = objUsuario.IdUsuario;
 
 
