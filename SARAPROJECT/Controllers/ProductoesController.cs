@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SARAPROJECT.Filters;
+using SARAPROJECT.Helpers;
 using SARAPROJECT.Models;
 using SARAPROJECT.Service;
 
@@ -24,26 +25,18 @@ namespace SARAPROJECT.Controllers
             _context = context;
         }
 
-        /*Metodo adicional para obtener el usuario*/
-        public Usuario returnUsuario()
-        {
-            Usuario objUsuario = new Usuario(); 
-            var str = (HttpContext.Session.GetString("Usuario"));
-            objUsuario = JsonConvert.DeserializeObject<Usuario>(str);
-            return objUsuario; 
-        }
-
-
         // GET: Productoes
         public async Task<IActionResult> Index()
         {
-            Usuario objUsuario = new Usuario(); 
+           
             if (string.IsNullOrWhiteSpace(HttpContext.Session.GetString("Usuario")))
             {
                 return RedirectToAction("Login", "Acceso");
             }
 
-            objUsuario = returnUsuario(); 
+            var str = (HttpContext.Session.GetString("Usuario"));
+            var objUsuario = JsonConvert.DeserializeObject<Usuario>(str);
+
             objAuthorizeUser = new authorizeUser(_context);
 
             if (objAuthorizeUser.OnAuthorization(1, objUsuario.IdRol) == false)
@@ -52,7 +45,7 @@ namespace SARAPROJECT.Controllers
             }
 
             var sARADBContext = _context.Productos.Include(p => p.IdCategoriaNavigation);
-            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
+
             return View(await sARADBContext.ToListAsync());
         }
 
@@ -71,7 +64,7 @@ namespace SARAPROJECT.Controllers
             {
                 return NotFound();
             }
-            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
+
             return View(producto);
         }
 
@@ -103,7 +96,7 @@ namespace SARAPROJECT.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
+
             ViewData["IdCategoria"] = new SelectList(_context.Categoria, "IdCategoria", "Nombre", producto.IdCategoria);
             return View(producto);
         }
@@ -169,7 +162,7 @@ namespace SARAPROJECT.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
+
             ViewData["IdCategoria"] = new SelectList(_context.Categoria, "IdCategoria", "Nombre", producto.IdCategoria);
             return View(producto);
         }
@@ -189,7 +182,7 @@ namespace SARAPROJECT.Controllers
             {
                 return NotFound();
             }
-            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
+
             return View(producto);
         }
 

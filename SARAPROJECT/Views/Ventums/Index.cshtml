@@ -143,19 +143,17 @@
                                     @{
                                         var IdVenta ="IdVenta"+item.IdVenta;
                                         var Total = "Total" + item.IdVenta;
-                                        String inabilitado = "disabled";
-
                                         if (item.IdEstventa == 1)
                                         {
-                                            inabilitado = ""; 
+                                        <button id="cobrarButton" type="button" value="@item.IdVenta" data-toggle="modal"  class="btnCobrar btn-primary btn-sm"> 
+                                            <i class="fa fa-dot-circle-o"></i>  Cobrar
+                                        </button>
                                         }
                                     }
                                     <input type="hidden" id="@Total" value="@item.Total"/>
                                     
-                                    <button @inabilitado id="cobrarButton" type="button" value="@item.IdVenta" data-toggle="modal"  class="btnCobrar btn-primary btn-sm"> 
-                                        <i class="fa fa-dot-circle-o"></i>  Cobrar
-                                    </button>
-                                    <a asp-action="Details" asp-route-id="@item.IdVenta">Details</a>
+                                    <a asp-action="Details" asp-route-id="@item.IdVenta">Detalles</a>
+                                    <a asp-action="Delete" asp-route-id="@item.IdVenta">Anular</a>
                             </td>
                         </tr>
                 }
@@ -289,12 +287,12 @@ $(document).ready(function () {
                 document.getElementById("bodyModalCob").innerHTML = "<div class=\"alert alert-success\" role=\"alert\">" +
                     "Venta cobrada con éxito </div>";
                 /*Footer del modal*/
-                document.getElementById("footerModalCob").innerHTML = "<button class=\"btn btn - primary\" types=\"button\" onclick=\"location.reload()\">" +
-                    "Nueva Venta" +
+                document.getElementById("footerModalCob").innerHTML = "<button class=\"btn btn-primary\" types=\"button\" onclick=\"location.reload()\">" +
+                    "Aceptar" +
                     "</button>" +
-                    "<form method=\"POST\" action=\"" + urlPrintPreticket + "\" >"+
+                    "<form method=\"GET\" action=\"" + urlPrintPreticket + "\" >"+
                     "<input type =\"hidden\" name=\"idVenta\" value=\"" + data.respuesta + "\">" +
-                    "<button class=\"btn btn - primary\" type=\"submit\" >" +
+                    "<button class=\"btn btn-primary\" type=\"submit\" >" +
                     "Imprimir" +
                     "</button> </form>";
             //IMPRIMIR

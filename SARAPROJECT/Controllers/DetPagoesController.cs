@@ -36,7 +36,6 @@ namespace SARAPROJECT.Controllers
         public async Task<IActionResult> Index()
         {
             var sARADBContext = _context.DetPagos.Include(d => d.IdMetodoNavigation).Include(d => d.IdVentaNavigation);
-            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
             return View(await sARADBContext.ToListAsync());
         }
 
@@ -56,7 +55,7 @@ namespace SARAPROJECT.Controllers
             {
                 return NotFound();
             }
-            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
+
             return View(detPago);
         }
 
@@ -65,7 +64,7 @@ namespace SARAPROJECT.Controllers
         {
             ViewData["IdMetodo"] = new SelectList(_context.MetodoPagos, "IdMetodo", "IdMetodo");
             ViewData["IdVenta"] = new SelectList(_context.Venta, "IdVenta", "IdVenta");
-            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
+
             return View();
         }
 
@@ -84,7 +83,7 @@ namespace SARAPROJECT.Controllers
             }
             ViewData["IdMetodo"] = new SelectList(_context.MetodoPagos, "IdMetodo", "IdMetodo", detPago.IdMetodo);
             ViewData["IdVenta"] = new SelectList(_context.Venta, "IdVenta", "IdVenta", detPago.IdVenta);
-            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
+
             return View(detPago);
         }
 
@@ -103,7 +102,7 @@ namespace SARAPROJECT.Controllers
             }
             ViewData["IdMetodo"] = new SelectList(_context.MetodoPagos, "IdMetodo", "IdMetodo", detPago.IdMetodo);
             ViewData["IdVenta"] = new SelectList(_context.Venta, "IdVenta", "IdVenta", detPago.IdVenta);
-            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
+
             return View(detPago);
         }
 
@@ -141,7 +140,7 @@ namespace SARAPROJECT.Controllers
             }
             ViewData["IdMetodo"] = new SelectList(_context.MetodoPagos, "IdMetodo", "IdMetodo", detPago.IdMetodo);
             ViewData["IdVenta"] = new SelectList(_context.Venta, "IdVenta", "IdVenta", detPago.IdVenta);
-            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
+
             return View(detPago);
         }
 
@@ -181,13 +180,13 @@ namespace SARAPROJECT.Controllers
             }
             
             await _context.SaveChangesAsync();
-            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
+
             return RedirectToAction(nameof(Index));
         }
 
         private bool DetPagoExists(int id)
         {
-            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
+
             return _context.DetPagos.Any(e => e.IdDetpago == id);
         }
     }

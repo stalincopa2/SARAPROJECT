@@ -79,7 +79,9 @@ function productsToList(x) {
             "<i class=\"zmdi zmdi-delete\"></i> </button>" +
             "  </td> </tr>";
         document.getElementById("productsToPayList").innerHTML += productsToPayList;
-        totalInput.setAttribute("value", totalValueOriginal.add(precioUnitario.mul(dVentaListTosend[posicionActual].cantidad)));
+
+        var totalValueDecimal = new Decimal(totalValueOriginal.add(precioUnitario.mul(dVentaListTosend[posicionActual].cantidad)));
+        totalInput.setAttribute("value",totalValueDecimal);
     }
 
     if (totalInput.value == 0) {

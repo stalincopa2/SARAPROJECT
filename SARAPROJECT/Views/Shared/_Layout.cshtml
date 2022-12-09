@@ -1,4 +1,20 @@
-﻿<!DOCTYPE html>
+﻿
+@{
+    @using Microsoft.AspNetCore.Session; 
+    @using Microsoft.AspNetCore.Http;
+    @using SARAPROJECT.Helpers;
+    @inject IHttpContextAccessor HttpContextAccessor;
+
+    Usuario Usuario = new Usuario();
+    Sessions sessions = new Sessions(HttpContextAccessor);
+
+    Usuario= sessions.sessionUsuarioGet();
+    var Avatar = sessions.UrlAvatar();
+    var NombreUsuario = Usuario.NombreUsuario;
+}
+   
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
         <!-- Required meta tags-->
@@ -44,9 +60,9 @@
             <div class="menu-sidebar2__content js-scrollbar1">
                 <div class="account2">
                     <div class="image img-cir img-120">
-                        <img src="@ViewBag.Avatar" alt="LLogo del icono de usuario" />
+                        <img src="@Avatar" alt="LLogo del icono de usuario" />
                     </div>
-                    <h4 class="name">@ViewBag.Usuario</h4>
+                    <h4 class="name">@NombreUsuario</h4>
                     <a asp-controller="Home" asp-action="Logout" >Sign out</a>
                 </div>
                 <nav class="navbar-sidebar2">
@@ -54,7 +70,7 @@
                         <li>
                             <a asp-area="" asp-controller="Home" asp-action="Index">
                                 <i class="fas fa-home"></i>Home</a>
-                           <!--<span class="inbox-num">3</span> --> 
+                         
                         </li>
                         <li>
                             <a asp-area="" asp-controller="Sucursals" asp-action="Index">
@@ -78,14 +94,33 @@
                             <a asp-area="" asp-controller="Mesas" asp-action="Index">
                                 <i class="fas  fa-eraser"></i>Mesas</a>
                         </li>
-                        <li>
-                            <a asp-area="" asp-controller="Ventums" asp-action="Index">
-                                <i class="fas  fa-tags"></i>Ventas</a>
+
+                        <li class="active has-sub">
+                            <a class="js-arrow" href="#">
+                                <i class="fas fa-tachometer-alt"></i>Ventas
+                                <span class="arrow">
+                                    <i class="fas fa-angle-down"></i>
+                                </span>
+                            </a>
+                            <ul class="list-unstyled navbar__sub-list js-sub-list">
+                                <li>
+                                    <a href="@Url.Action( "Index", "Ventums", new { eVent= 1})">
+                                        <i class="fas  fa-tags"></i>Ventas pendientes</a>
+                                        <span class="inbox-num" id="inbox-num"></span>
+    
+                                </li>
+                                <li>
+                                    <a href="@Url.Action( "Index", "Ventums", new { eVent= 2})">
+                                        <i class="fas  fa-tags"></i>Ventas cobradas</a>
+                                </li>
+                            </ul>
                         </li>
+
                         <li>
                             <a  asp-controller="Ventums" asp-action="Create">
                                 <i class="fas  fa-ticket"></i>Nueva Venta</a>
                         </li>
+
                         <li>
                             <a  asp-controller="Ventums" asp-action="Register">
                                 <i class="fas  fa-ticket"></i>Registrar pedido</a>
@@ -289,6 +324,23 @@
     <script src="~/vendor/vector-map/jquery.vmap.world.js"></script>
      <!-- Main JS-->
     <script src="~/js/main.js"></script>
+
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+    <script>
+     var connection = new signalR.HubConnectionBuilder()
+    .withUrl("/ventasPendientes")
+    .build();
+
+    connection.start().then(() => console.log("conectado"))
+    .catch((err) => console.error(err)); 
+
+    connection.on("Receive", (venta) => {
+       console.log(venta.length);
+        document.getElementById("inbox-num").innerHTML = venta.length;
+    }); 
+
+    </script>
+    
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

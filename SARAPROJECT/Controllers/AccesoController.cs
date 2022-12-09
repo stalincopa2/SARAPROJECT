@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using SARAPROJECT.Helpers;
 using SARAPROJECT.Models;
 
 namespace SARAPROJECT.Controllers
@@ -7,10 +8,11 @@ namespace SARAPROJECT.Controllers
     public class AccesoController : Controller
     {
         private readonly SARADBContext _context;
-
-        public AccesoController(SARADBContext context)
+        private readonly IHttpContextAccessor _httpContext;
+        public AccesoController(SARADBContext context, IHttpContextAccessor httpContext)
         {
             _context = context;
+            _httpContext = httpContext;
         }
 
 
@@ -23,6 +25,8 @@ namespace SARAPROJECT.Controllers
         [HttpPost]
         public ActionResult Login(string User, string Pass)
         {
+           
+            Sessions sesion = new Sessions(_httpContext);
             try
             {
                     var oUser = (from u in _context.Usuarios
@@ -33,16 +37,7 @@ namespace SARAPROJECT.Controllers
                         ViewBag.Error = "Usuario o contracenia Incorrecta";
                         return View();
                     }
-                    if (oUser.Sexo == "M")
-                    {
-                    HttpContext.Session.SetString("avatarUser", "/images/icon/avatar-male2.png");
-                    }
-                    else
-                    {
-                    HttpContext.Session.SetString("avatarUser", "/images/icon/avatar-female.png");
-                    }
-                    string usuario = JsonConvert.SerializeObject(oUser);
-                    HttpContext.Session.SetString("Usuario", usuario);
+                     sesion.sessionUsuarioSet(oUser);                     
                     return RedirectToAction("Index", "Home");
             }
             catch(Exception ex)

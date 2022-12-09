@@ -21,7 +21,6 @@ namespace SARAPROJECT.Controllers
         // GET: Categoriums
         public async Task<IActionResult> Index()
         {
-            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
             return View(await _context.Categoria.ToListAsync());
         }
 
@@ -39,7 +38,6 @@ namespace SARAPROJECT.Controllers
             {
                 return NotFound();
             }
-            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
             return View(categorium);
         }
 
@@ -62,7 +60,6 @@ namespace SARAPROJECT.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
             return View(categorium);
         }
 
@@ -114,7 +111,7 @@ namespace SARAPROJECT.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
+
             return View(categorium);
         }
 

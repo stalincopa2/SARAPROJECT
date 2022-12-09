@@ -151,6 +151,14 @@ $(document).ready(function () {
             if (data.respuesta > 0) {
                 document.getElementById("bodyModalNoCob").innerHTML = "<div class=\"alert alert-success\" role=\"alert\">" +
                     "Pedido registrado con éxito </div>";
+                document.getElementById("footerModalNoCob").innerHTML = "<button class=\"btn btn-primary\" types=\"button\" onclick=\"location.reload()\">" +
+                    "Nueva registro" +
+                    "</button>" +
+                    "<form method=\"GET\" action=\"" + urlPrintPreticket + "\" >" +
+                    "<input type =\"hidden\" name=\"idVenta\" value=\"" + data.respuesta + "\">" +
+                    "<button class=\"btn btn - primary\" type=\"submit\" >" +
+                    "Imprimir" +
+                    "</button> </form>";
             }
         })
     });

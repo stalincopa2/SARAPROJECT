@@ -22,9 +22,11 @@ namespace SARAPROJECT.Controllers
             }
             var str = (HttpContext.Session.GetString("Usuario"));
             var objUsuario = JsonConvert.DeserializeObject<Usuario>(str);
+
+
+            
             ViewBag.Usuario = objUsuario.NombreUsuario;
             ViewBag.IdUsuario = objUsuario.IdUsuario;
-            ViewBag.Avatar= HttpContext.Session.GetString("avatarUser");
             return View();
         }
 

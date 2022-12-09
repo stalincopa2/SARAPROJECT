@@ -23,7 +23,7 @@ namespace SARAPROJECT.Controllers
         public async Task<IActionResult> Index()
         {
             var sARADBContext = _context.Usuarios.Include(u => u.IdRolNavigation).Include(u => u.IdSucursalNavigation);
-            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
+
             return View(await sARADBContext.ToListAsync());
             
         }
@@ -44,7 +44,7 @@ namespace SARAPROJECT.Controllers
             {
                 return NotFound();
             }
-            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
+
             return View(usuario);
         }
 
@@ -53,7 +53,7 @@ namespace SARAPROJECT.Controllers
         {
             ViewData["IdRol"] = new SelectList(_context.Rols, "IdRol", "NombreRol");
             ViewData["IdSucursal"] = new SelectList(_context.Sucursals, "IdSucursal", "Nombre");
-            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
+
             return View();
         }
 
@@ -75,7 +75,7 @@ namespace SARAPROJECT.Controllers
             }
             ViewData["IdRol"] = new SelectList(_context.Rols, "IdRol", "IdRol", usuario.IdRol);
             ViewData["IdSucursal"] = new SelectList(_context.Sucursals, "IdSucursal", "IdSucursal", usuario.IdSucursal);
-            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
+
             return View(usuario);
         }
 
@@ -94,7 +94,7 @@ namespace SARAPROJECT.Controllers
             }
             ViewData["IdRol"] = new SelectList(_context.Rols, "IdRol", "IdRol", usuario.IdRol);
             ViewData["IdSucursal"] = new SelectList(_context.Sucursals, "IdSucursal", "IdSucursal", usuario.IdSucursal);
-            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
+
             return View(usuario);
         }
 
@@ -135,7 +135,7 @@ namespace SARAPROJECT.Controllers
             }
             ViewData["IdRol"] = new SelectList(_context.Rols, "IdRol", "IdRol", usuario.IdRol);
             ViewData["IdSucursal"] = new SelectList(_context.Sucursals, "IdSucursal", "IdSucursal", usuario.IdSucursal);
-            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
+
             return View(usuario);
         }
 
@@ -155,7 +155,7 @@ namespace SARAPROJECT.Controllers
             {
                 return NotFound();
             }
-            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
+
             return View(usuario);
         }
 
@@ -175,7 +175,8 @@ namespace SARAPROJECT.Controllers
             }
             
             await _context.SaveChangesAsync();
-            ViewBag.Avatar = HttpContext.Session.GetString("avatarUser");
+
+
             return RedirectToAction(nameof(Index));
         }
 

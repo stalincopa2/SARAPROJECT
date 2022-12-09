@@ -16,7 +16,7 @@ $(document).ready(function () {
                 document.getElementById("bodyModalCob").innerHTML = "<div class=\"alert alert-success\" role=\"alert\">" +
                     "Venta cobrada con éxito </div>";
                 /*Footer del modal*/
-                document.getElementById("footerModalCob").innerHTML = "<button class=\"btn btn - primary\" types=\"button\" onclick=\"location.reload()\">" +
+                document.getElementById("footerModalCob").innerHTML = "<button class=\"btn btn-primary\" types=\"button\" onclick=\"location.reload()\">" +
                     "Nueva Venta" +
                     "</button>" +
                     "<form method=\"GET\" action=\"" + urlPrintPreticket + "\" >"+
