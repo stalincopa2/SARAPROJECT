@@ -35,7 +35,7 @@
                             </ul>
                         </div>
                         <button class="au-btn au-btn-icon au-btn--green">
-                            <i class="zmdi zmdi-plus"></i><a asp-action="Create" >Create New</a></button>
+                            <i class="zmdi zmdi-plus"></i><a asp-action="Create" >Añadir</a></button>
                     </div>
                 </div>
             </div>
@@ -55,10 +55,10 @@
                         @if (pagina.CurrentPage > 1)
                         {
                             <li class="page-item">
-                                @Html.ActionLink("Fisrt", "Index", "Ventums", new {  pg = 1 }, new { @class = "page-link" })
+                               <a href="@Url.Action("Index", "Ventums", new {  pg = 1 , eVent=2})" class = "page-link"> First </a>
                             </li>
                             <li>
-                                @Html.ActionLink("Previous", "Index", "Ventums", new {pg = pagina.CurrentPage + 1 }, new { @class = "page-link" })
+                                 <a href="@Url.Action("Index", "Ventums", new {  pg = pagina.CurrentPage + 1 , eVent=2})" class = "page-link">Previous </a>
                             </li>
 
                         }
@@ -66,31 +66,30 @@
                         {
 
                             <li class="page-item" @(pge == pagina.CurrentPage ? "active" : "")>
-                                @Html.ActionLink(@pge.ToString(), "Index", "Ventums", new { pg = @pge }, new { @class = "page-link" })
+                                 <a href="@Url.Action("Index", "Ventums", new {  pg = @pge , eVent=2})" class = "page-link">@pge.ToString()</a>
                             </li>
                         }
 
                         @if (pagina.CurrentPage < pagina.TotalPages)
                         {
                             <li class="page-item">
-                                @Html.ActionLink("Next", "Index", "Ventums", new {pg = pagina.CurrentPage + 1 }, new { @class = "page-link" })
+                                <a href="@Url.Action("Index", "Ventums", new {  pg = pagina.CurrentPage + 1 , eVent=2})" class = "page-link">Next</a>
                             </li>
                             <li class="page-item">
-                                @Html.ActionLink("Last", "Index", "Ventums", new { pg = pagina.TotalPages }, new { @class = "page-link" })
+                                <a href="@Url.Action("Index", "Ventums", new {  pg = pagina.TotalPages , eVent=2})" class = "page-link">Last</a>
                             </li>
                         }
                     </ul>
-
                 }
             </div>
         </div>
     </div>
 
     <div class="row">
-      <div class="col-12">
+      <div class="col-md-12">
           <h2 class="title-1 m-b-25">Lista de Ventas</h2>
           <div class="table-responsive table--no-card m-b-40">
-              <table class="table table-borderless table-striped table-earning">
+              <table class="table table-borderless table-striped">
                     <thead>
                         <tr>
                             <th>
@@ -145,9 +144,9 @@
                                         var Total = "Total" + item.IdVenta;
                                         if (item.IdEstventa == 1)
                                         {
-                                        <button id="cobrarButton" type="button" value="@item.IdVenta" data-toggle="modal"  class="btnCobrar btn-primary btn-sm"> 
-                                            <i class="fa fa-dot-circle-o"></i>  Cobrar
-                                        </button>
+                                                <button id="cobrarButton" type="button" value="@item.IdVenta" data-toggle="modal"  class="btnCobrar btn-primary btn-sm"> 
+                                                    <i class="fa fa-dot-circle-o"></i>  Cobrar
+                                                </button>
                                         }
                                     }
                                     <input type="hidden" id="@Total" value="@item.Total"/>
@@ -242,9 +241,9 @@
 
     function calcularCambio() {
         var totalInput = document.getElementById("totalModal").value;
-
+        var Montoinput = document.getElementById("Monto");
         var Total = new Decimal(totalInput.replace(",","."));
-        var Monto = new Decimal(document.getElementById("Monto").value); 
+        var Monto = new Decimal(Montoinput.value); 
         var cambio = Monto.sub(Total);
 
         if (cambio< 0)
@@ -263,45 +262,38 @@
     })
 
     /*AJAX ENVIAR COMPRA CON DETALLE cobrando*/
-$(document).ready(function () {
-    $(document).on('click', '.btnEnviar', function (e) {
-        e.preventDefault();
+    $(document).ready(function () {
+        $(document).on('click', '.btnEnviar', function (e) {
+            e.preventDefault();
 
-        var MontoValue = new Decimal(document.getElementById("Monto").value); 
+            var MontoValue = new Decimal(document.getElementById("Monto").value); 
 
-        var oDetPago = {
-            IdVenta:  document.getElementById("IdVenta").value,
-            IdMetodo: document.getElementById("IdMetodo").value,
-            Monto: MontoValue.toNumber()
-        };
+            var oDetPago = {
+                IdVenta:  document.getElementById("IdVenta").value,
+                IdMetodo: document.getElementById("IdMetodo").value,
+                Monto: MontoValue.toNumber()
+            };
 
-        $.ajax({ // cabecera de mi metodo ajax
-            url: urlPedidoRegistro,
-            type: "POST",
-            data: JSON.stringify(oDetPago),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-        }).done(function (data) {
-            if (data.respuesta > 0) {
-                /*Body del modal*/
-                document.getElementById("bodyModalCob").innerHTML = "<div class=\"alert alert-success\" role=\"alert\">" +
-                    "Venta cobrada con éxito </div>";
-                /*Footer del modal*/
-                document.getElementById("footerModalCob").innerHTML = "<button class=\"btn btn-primary\" types=\"button\" onclick=\"location.reload()\">" +
-                    "Aceptar" +
-                    "</button>" +
-                    "<form method=\"GET\" action=\"" + urlPrintPreticket + "\" >"+
-                    "<input type =\"hidden\" name=\"idVenta\" value=\"" + data.respuesta + "\">" +
-                    "<button class=\"btn btn-primary\" type=\"submit\" >" +
-                    "Imprimir" +
-                    "</button> </form>";
-            //IMPRIMIR
-            }     
-        })
+            $.ajax({ // cabecera de mi metodo ajax
+                url: urlPedidoRegistro,
+                type: "POST",
+                data: JSON.stringify(oDetPago),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+            }).done(function (data) {
+                if (data.respuesta > 0) {
+                    /*Body del modal*/
+                    document.getElementById("bodyModalCob").innerHTML = "<div class=\"alert alert-success\" role=\"alert\">" +
+                        "Venta cobrada con éxito </div>";
+                    /*Footer del modal*/
+                    document.getElementById("footerModalCob").innerHTML = "<button class=\"btn btn-primary\" types=\"button\" onclick=\"location.reload()\">" +
+                        "Aceptar" +
+                        "</button>" +
+                        "<a  href=\"" + urlPrintPreticket +"?idVenta="+data.respuesta + "\" target=\"_blank\">"+ "Imprimir Preticket" +"</a>";
+                //IMPRIMIR
+                }     
+            })
+        });
     });
-});
-
-
-
 </script>
 

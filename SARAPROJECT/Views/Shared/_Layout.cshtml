@@ -48,7 +48,7 @@
 
 </head>
 <body class="animistion">
-
+    
     <div class="page-wrapper">
         <!-- MENU SIDEBAR-->
         <aside class="menu-sidebar2">
@@ -104,10 +104,8 @@
                             </a>
                             <ul class="list-unstyled navbar__sub-list js-sub-list">
                                 <li>
-                                    <a href="@Url.Action( "Index", "Ventums", new { eVent= 1})">
+                                    <a href="@Url.Action( "Index", "Ventums", new { eVent= 1})" >
                                         <i class="fas  fa-tags"></i>Ventas pendientes</a>
-                                        <span class="inbox-num" id="inbox-num"></span>
-    
                                 </li>
                                 <li>
                                     <a href="@Url.Action( "Index", "Ventums", new { eVent= 2})">
@@ -160,11 +158,11 @@
                                         </form>
                                     </div>
                                 </div>
-                                <div class="header-button-item has-noti js-item-menu">
+                                <div class="header-button-item js-item-menu" id="notificationIcon">
                                     <i class="zmdi zmdi-notifications"></i>
-                                    <div class="notifi-dropdown js-dropdown">
-                                        <div class="notifi__title">
-                                            <p>You have 3 Notifications</p>
+                                    <div class="notifi-dropdown js-dropdown" id ="contetNofiti">
+                                       <!-- <div class="notifi__title">
+                                            <p id="notificationMesage"> </p>
                                         </div>
                                         <div class="notifi__item">
                                             <div class="bg-c1 img-cir img-40">
@@ -183,19 +181,8 @@
                                                 <p>Your account has been blocked</p>
                                                 <span class="date">April 12, 2018 06:50</span>
                                             </div>
-                                        </div>
-                                        <div class="notifi__item">
-                                            <div class="bg-c3 img-cir img-40">
-                                                <i class="zmdi zmdi-file-text"></i>
-                                            </div>
-                                            <div class="content">
-                                                <p>You got a new file</p>
-                                                <span class="date">April 12, 2018 06:50</span>
-                                            </div>
-                                        </div>
-                                        <div class="notifi__footer">
-                                            <a href="#">All notifications</a>
-                                        </div>
+                                        </div> -->
+
                                     </div>
                                 </div>
                                 <div class="header-button-item mr-0 js-sidebar-btn">
@@ -233,9 +220,9 @@
                 <div class="menu-sidebar2__content js-scrollbar2">
                     <div class="account2">
                         <div class="image img-cir img-120">
-                            <img src="@ViewBag.Avatar" alt="Logo del avatar del usuario" />
+                            <img src="@Avatar" alt="Logo del avatar del usuario" />
                         </div>
-                        <h4 class="name">@ViewBag.Usuario</h4>
+                        <h4 class="name">@NombreUsuario</h4>
                         <a asp-area="" asp-controller="Home" asp-action="Logout">Sign out</a>
                     </div>
                     <nav class="navbar-sidebar2">
@@ -267,9 +254,23 @@
                             <a asp-area="" asp-controller="Mesas" asp-action="Index">
                                 <i class="fas fa-shopping-basket"></i>Mesas</a>
                         </li>
-                        <li>
-                            <a asp-area="" asp-controller="Ventums" asp-action="Index">
-                                <i class="fas fa-shopping-basket"></i>Ventas</a>
+                        <li class="active has-sub">
+                            <a class="js-arrow" href="#">
+                                <i class="fas fa-tachometer-alt"></i>Ventas
+                                <span class="arrow">
+                                    <i class="fas fa-angle-down"></i>
+                                </span>
+                            </a>
+                            <ul class="list-unstyled navbar__sub-list js-sub-list">
+                                <li>
+                                    <a href="@Url.Action( "Index", "Ventums", new { eVent= 1})">
+                                        <i class="fas  fa-tags"></i>Ventas pendientes</a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action( "Index", "Ventums", new { eVent= 2})">
+                                        <i class="fas  fa-tags"></i>Ventas cobradas</a>
+                                </li>
+                            </ul>
                         </li>
                         <li>
                             <a  asp-controller="Usuarios" asp-action="Index">
@@ -298,6 +299,7 @@
             <!-- END PAGE CONTAINER-->
         </div>
     </div>
+    <audio id="timbre" src="/sounds/timbre.mp3"></audio>
     <!-- Jquery JS-->
     <script src="~/vendor/jquery-3.2.1.min.js"></script>
     <!-- Bootstrap JS-->
@@ -327,6 +329,7 @@
 
     <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
     <script>
+     let cantPendientesTotal = 0; 
      var connection = new signalR.HubConnectionBuilder()
     .withUrl("/ventasPendientes")
     .build();
@@ -335,8 +338,28 @@
     .catch((err) => console.error(err)); 
 
     connection.on("Receive", (venta) => {
-       console.log(venta.length);
-        document.getElementById("inbox-num").innerHTML = venta.length;
+
+            var itemPedidolist = ""; 
+            venta.forEach((element) => {
+            itemPedidolist += "<div class=\"notifi__item\" >" +
+                "<div class=\"bg-c3 img-cir img-40\">" +
+                    "<i class=\"zmdi zmdi-file-text\"></i>" +
+                 "</div>" +
+                    "<div class=\"content\">" +
+                        "<p>"+element.nroPedido+"</p>" +
+                        "<span class=\"date\">"+element.fechaVenta+"</span>" +
+                    "</div>" +
+                "</div>";
+
+            });
+            if (itemPedidolist == "") {
+                document.getElementById("notificationIcon").classList.remove('has-noti');
+                document.getElementById("contetNofiti").innerHTML = "No hay pedidos pendientes"; 
+            } else {
+                document.getElementById("notificationIcon").classList.add('has-noti');
+                document.getElementById("contetNofiti").innerHTML = itemPedidolist;
+            }
+            
     }); 
 
     </script>

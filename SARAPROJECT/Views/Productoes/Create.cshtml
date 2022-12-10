@@ -28,17 +28,17 @@
             </div>
             <div class="form-group">
                 <label asp-for="Costo" class="control-label"></label>
-                <input name="Costo" class="form-control"  required/>
+                <input asp-for="Costo" class="form-control" required data-val-number="Numero no Invalido" />
                 <span asp-validation-for="Costo" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Precio" class="control-label"></label>
-                <input name="Precio" class="form-control" required/>
+                <input asp-for="Precio" class="form-control" data-val-number="Numero no Invalido"/>
                 <span asp-validation-for="Precio" class="text-danger" ></span>
             </div>
             <div class="form-group">
                 <label asp-for="ImpuestoProd" class="control-label"></label>
-                <input asp-for="ImpuestoProd" class="form-control" />
+                <input asp-for="ImpuestoProd" class="form-control" value="0"/>
                 <span asp-validation-for="ImpuestoProd" class="text-danger"></span>
             </div>
             <!-- 
@@ -63,7 +63,8 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/preciosSolucionTemporal.js"></script>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

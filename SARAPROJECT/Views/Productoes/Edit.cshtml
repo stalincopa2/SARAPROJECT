@@ -30,12 +30,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Costo" class="control-label"></label>
-                <input name="Costo" class="form-control"  required/>
+                <input asp-for="Costo" class="form-control"  required/>
                 <span asp-validation-for="Costo" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Precio" class="control-label"></label>
-                <input name="Precio" class="form-control" required/>
+                <input asp-for="Precio" class="form-control" required/>
                 <span asp-validation-for="Precio" class="text-danger" ></span>
             </div>
             <div class="form-group">
@@ -68,7 +68,19 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/preciosSolucionTemporal.js"></script>
+<script>
+    
+    let precio=  document.getElementById("Precio").value;
 
+    let costo =  document.getElementById("Costo").value;
+
+    window.onload= function() {
+        document.getElementById("Precio").setAttribute("value", precio + "0");
+        document.getElementById("Costo").setAttribute("value", costo + "0");
+    };
+</script>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

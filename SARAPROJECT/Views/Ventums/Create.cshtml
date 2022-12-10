@@ -44,19 +44,26 @@
 </section>
 END BREADCRUMB-->
 
-  <div class="row" style="margin-top:20px">
+  <div class="row" style="margin-top:80px">
     <div class="col-lg-7">
-        <div class="container">
-        <h2 class="title-1 m-b-25">Categorias</h2>
-        <img class="control prev" id="prev" src="/images/img1.png" alt="">
-        <div class="slider" id="slider">
-             @foreach(var pr in ViewBag.listCategorias)
-             {
-              <button  value="@pr.IdCategoria" name="id" id="btnCargarLista" class="cargeList">@pr.Nombre </button>
-             }
-        </div>
-        <img class="control next"  id="next" src="/images/img2.png" alt="">
+            <nav aria-label="...">
+              <ul class="pagination">
+                <li class="page-item ">
+                  <a class="page-link control prev" href="#" tabindex="-1">Previous</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link control next" href="#">Next</a>
+                </li>
+              </ul>
+            </nav>
 
+        <div class="container">
+            <div class="slider">
+                 @foreach(var pr in ViewBag.listCategorias)
+                 {
+                  <button  value="@pr.IdCategoria" name="id" id="btnCargarLista" class="cargeList">@pr.Nombre </button>
+                 }
+            </div>
         </div>
         <div class="row">
             <div class="col-lg-10">
@@ -88,10 +95,9 @@ END BREADCRUMB-->
         </div>
     </div>
     <div class="col-lg-5">
-        <h2 class="title-1 m-b-25">Venta</h2>
-        <div class="au-card au-card-top-countries">
-                <div class="table-responsive">
-                  <div class="card-body card-block">
+        <div class="card">
+                <div class="card-header">Venta</div>
+                 <div class="card-body card-block">
                       <div class="ventaDetalle"> 
                          <div asp-validation-summary="ModelOnly" class="text-danger"></div> 
                            <!--NRO PEDIDO-->
@@ -156,32 +162,7 @@ END BREADCRUMB-->
                                 <span asp-validation-for="FechaVenta" class="text-danger"></span>
                               </div>
                           </div>                                            
-                          <!--TOTAL  VENTA-->
-                          <div class="row form-group">
-                              <div class="col col-md-3">
-                                <label asp-for="Total" class="control-label"></label>
-                              </div>
-                              <div class="col-12 col-md-9">                                              
-                                <input asp-for="Total" class="form-control"  value="0" readonly/>
-                                <span asp-validation-for="Total" class="text-danger"></span>
-                              </div>
-                          </div>  
-                         <!-- 
-                          <div class="form-group">
-                              <label asp-for="IdEstado" class="control-label"></label>
-                              <select asp-for="IdEstado" class ="form-control" asp-items="ViewBag.IdEstado"></select>
-                          </div>-->
-                          <!-- 
-                          <div class="form-group">
-                              <label asp-for="IdMetodo" class="control-label"></label>
-                              <input asp-for="IdMetodo" class="form-control" />
-                              <span asp-validation-for="IdMetodo" class="text-danger"></span>
-                          </div>
-                          <div class="form-group">
-                              <label asp-for="Nombre" class="control-label"></label>
-                              <input asp-for="Nombre" class="form-control" />
-                              <span asp-validation-for="Nombre" class="text-danger"></span>
-                          </div>-->
+
                           <div class="form-group text-hide">
                               <label asp-for="NroFactura" class="control-label"></label>
                               <input asp-for="NroFactura" class="form-control"  type="hidden" value="SN"/>
@@ -192,40 +173,53 @@ END BREADCRUMB-->
                               <input asp-for="ClaveAcceso" class="form-control"  type="hidden" value="SN"/>
                               <span asp-validation-for="ClaveAcceso" class="text-danger"></span>
                           </div>
-                    </div>
-                      
-                              <table class="table" style=" font-size:11px; width : 479px; margin : 0 0 10px 0; padding : 0 0 0 0; border-spacing : 0 0; border-collapse : collapse;">
-                                  <thead>
-                                      <tr>
-                                          <th>
-                                              CANT
-                                          </th>
-                                          <th>
-                                              DESCRIPCION
-                                         </th>
-                                          <th >
-                                              PRECIO
-                                          </th>
-                                          <th>
-                                              TOTAL
-                                          </th>
-                                          <th>
+                         <div class="table-responsive">
+                             <div class="tableListContent">
+                                  <table class="table" style=" font-size:11px; width : 479px; margin : 0 0 10px 0; padding : 0 0 0 0; border-spacing : 0 0; border-collapse : collapse;">
+                                       <thead>
+                                           <tr>
+                                              <th>
+                                                 CANT
+                                              </th>
+                                              <th>
+                                                 DESCRIPCION
+                                              </th>
+                                              <th >
+                                                 PRECIO
+                                              </th>
+                                              <th>
+                                                 TOTAL
+                                              </th>
+                                              <th>
 
-                                          </th>
-                                      </tr>
-                                  </thead>
-                                  <tbody id="productsToPayList">
+                                              </th>
+                                           </tr>
+                                       </thead>
+                                       <tbody id="productsToPayList">
   
-                                  </tbody>
-                              </table>
-                      
-                          <div class="card-footer">
-                              <button id="cobrarButton" type="button"  data-toggle="modal"  class="btn btn-primary btn-sm" data-target="#registrarModal" onclick="ShowModal()" disabled > 
-                                  <i class="fa fa-dot-circle-o"></i>  Cobrar
+                                       </tbody>
+                                  </table>
+                             </div>
+                         </div>
+                    </div>
+                 </div>
+                 <div class="card-footer">
+                          <!--TOTAL  VENTA-->
+                         <div class="row form-group">
+                              <div class="col col-md-3">
+                                <label asp-for="Total" class="control-label"></label>
+                              </div>
+                              <div class="col-12 col-md-9">                                              
+                                <input asp-for="Total" class="form-control"  value="0" readonly/>
+                                <span asp-validation-for="Total" class="text-danger"></span>
+                              </div>
+                         </div>  
+                         <div class="card-footer">
+                              <button id="cobrarButton" type="button"  data-toggle="modal"  class="btn btn-success btn-sm btn-info btn-block" data-target="#registrarModal" onclick="ShowModal()" disabled > 
+                                  <i ></i>  Cobrar
                               </button>
-                          </div>
-                  </div>
-                </div>
+                         </div>
+                 </div>
         </div>
     </div>
 </div>

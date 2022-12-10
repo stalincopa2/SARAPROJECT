@@ -114,6 +114,7 @@ namespace SARAPROJECT.Controllers
             {
                 return NotFound();
             }
+
             ViewData["IdCategoria"] = new SelectList(_context.Categoria, "IdCategoria", "Nombre", producto.IdCategoria);
             return View(producto);
         }

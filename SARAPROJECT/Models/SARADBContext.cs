@@ -45,8 +45,8 @@ namespace SARAPROJECT.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-
-                optionsBuilder.UseSqlServer("Data Source=LAPTOP-I1EL63V7;Initial Catalog=SARADB;User ID=sa;Password=12345;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+                optionsBuilder.UseSqlServer(" workstation id = SARAPROJECTDB.mssql.somee.com; packet size = 4096; user id = SCOPABASTIDAS01_SQLLogin_1; pwd = pzklen2da3; data source = SARAPROJECTDB.mssql.somee.com; persist security info = False; initial catalog = SARAPROJECTDB");
+               // optionsBuilder.UseSqlServer("Data Source=LAPTOP-I1EL63V7;Initial Catalog=SARADB;User ID=sa;Password=12345;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
             }  
         }
 

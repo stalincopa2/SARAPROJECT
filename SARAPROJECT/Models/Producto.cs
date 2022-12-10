@@ -22,9 +22,9 @@ namespace SARAPROJECT.Models
         [MaxLength(10)]
         public string CodProducto { get; set; } = null!;
         public string NombreProducto { get; set; } = null!;
-        [Column(TypeName = "decimal(19, 2)")]
+        [Column(TypeName = "decimal(16, 2)")]
         public decimal? Costo { get; set; }
-        [Column(TypeName = "decimal(19, 2)")]
+        [Column(TypeName = "decimal(16, 2)")]
         public decimal Precio { get; set; }
         public int ImpuestoProd { get; set; }
         public string? FotoProducto { get; set; }

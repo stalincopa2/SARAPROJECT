@@ -11,11 +11,18 @@
     font-size: 11px;
 }
 
-    .ventaDetalle input{
-        width: 125px;
-        height: 35px;
-    }
-    .ventaDetalle select {
-        width: 125px;
-        height: 35px;
-    }
+.ventaDetalle label{
+    font-weight:bold;
+}
+.ventaDetalle input{
+    font-size:12px;
+    display:inline-block;
+}
+.ventaDetalle select {
+    font-size: 12px;
+    display: inline-block;
+}
+
+.tableListContent{
+    height:200px;
+}

@@ -26,7 +26,7 @@ namespace SARAPROJECT.Controllers
 
         // GET: Ventums
         [HttpGet]
-        public async Task<IActionResult> Index(int pg = 1, int eVent=1)
+        public async Task<IActionResult> Index(int eVent=1, int pg = 1)
         {
             if (string.IsNullOrWhiteSpace(HttpContext.Session.GetString("Usuario")))
             {
@@ -44,11 +44,11 @@ namespace SARAPROJECT.Controllers
             if (eVent < 1)
                 eVent = 1;
 
-            var data = _context.Venta.Where(v => v.IdEstventa == eVent);
-            var pagina = new PAGINA(data.Count(), pg, pageSize);
+            var data1 = _context.Venta.Where(v=>v.IdEstventa== eVent).Count();
+            var pagina = new PAGINA(data1, pg, pageSize);
             ViewBag.pagina = pagina;
 
-            data = data.Skip((pg - 1) * pageSize).Take(pagina.PageSize).Include(v => v.IdEstventaNavigation).Include(v => v.IdUsuarioNavigation).OrderBy(v => v.IdVenta);
+            var data = _context.Venta.Where(v => v.IdEstventa == eVent).Skip((pg - 1) * pageSize).Take(pagina.PageSize).Include(v => v.IdEstventaNavigation).Include(v => v.IdUsuarioNavigation).OrderBy(v => v.IdVenta);
 
             return View(await data.ToListAsync());
         }
